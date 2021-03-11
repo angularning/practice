@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>手动实现apply，call，bind</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    Function.prototype._apply = function (context, arr) {
+        if (typeof this != 'function') {
+            throw new Error('this is not a function')
+        }
+        let fn = Symbol(), result;
+        context[fn] = this;
+        if (Array.isArray(arr)) {
+            result = context[fn](...arr)
+        }
+        delete context[fn];
+        return result
+    }
+    let name = 'xxx'
+    let a = function () {
+        console.log(this.name)
+    }, b = {name: 'xiaoxiao'};
+
+
+    Function.prototype._call = function (context) {
+        if (typeof this != 'function') {
+            throw new Error('this is not a function');
+        }
+        let fn = Symbol(), result;
+        context[fn] = this;
+        result = context[fn](...arguments);
+        delete context[fn];
+        return result
+    }
+    a._call(b, 12,3,4);
+
+    Function.prototype._bind=function (context) {
+        if(typeof this !='function'){
+            throw new Error('this is must function')
+        }
+        let _this=this;
+        let F=function(){};
+        let arg=[...arguments];
+        let res=function () {
+            return _this.apply(this instanceof F ?this:context,arg)
+        }
+        res.prototype=new F();
+        return res
+    }
+
+
+
+
+</script>

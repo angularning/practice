@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>需要学习的知识</title>
+    <style>
+        .border1 {
+            border: none;
+            position: relative;
+        }
+
+        .border1:after {
+            content: '';
+            display: block;
+            position: relative;
+            height: 2px;
+            width: 200%;
+            transform: scale(.5);
+            left: 0;
+            bottom: 0;
+            background: #333;
+            transform-origin: left;
+        }
+    </style>
+</head>
+<body>
+<div>
+    一条1px的线
+    <div class="border1"></div>
+</div>
+<div>
+    <nav>我是导航</nav>
+    <header>我是头部</header>
+    <main>
+        <session>我是内容1</session>
+        <session>我是内容2</session>
+    </main>
+    <footer>我是底部</footer>
+</div>
+<div>
+    <ul>
+
+        <li>
+            1、pwa是什么，怎么用
+        </li>
+        <li>
+            2、进程和线程的区别，分别讲解一下
+        </li>
+        <li>
+            3、二叉树的概念，以及树形和数据的相互转换
+        </li>
+        <li>
+            4、js的Event Loop，微任务，宏任务
+        </li>
+        <li>
+            5、js的进栈出栈
+        </li>
+        <li>
+            6、虚拟dom
+        </li>
+        <li>
+            7、diff算法
+        </li>
+        <li>
+            8、js的垃圾回收机制
+        </li>
+        <li>
+            9、客户端与前端如何通信
+        </li>
+        <li>
+            10、ios11input光标错位等问题
+        </li>
+        <li>
+            11、时间切片的概念
+        </li>
+        <li>
+            12、事件冒泡，事件捕获
+        </li>
+        <li>
+            13、webpack的构建流程
+        </li>
+        <li>
+            14、网页使用target="_blank"打开新的页面，会存在一些问题
+        </li>
+        <li>
+            15、cookie的相关操作，最近chrome把sameSit变成固定值
+        </li>
+        <li>
+            16、页面的重绘和回流，哪个更耗费性能
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script>
+    // 1、pwa全程是渐进式网页应用
+    // 他实现了一些只有原生APP才有的功能，比如，推送，通知，在手机上有一个图标入口，不需要打开浏览器输入网址。
+    // 核心是Service Work
+
+    // 2、线程进程有什么不同呢，进程包括线程，一个进程中有很多线程,进程是cpu分配内存空间的最小单位，线程是执行的最小单位
+    // 那么浏览器有哪些进程呢
+    // 浏览器包含很多进程，比如：主进程，第三方插件进程，GPU进程，渲染进程（浏览器内核）
+    // 浏览器内核包括很多线程，
+    // 比如：GUI渲染线程，页面渲染。
+    // JS引擎线程 js的执行
+    // 事件线程  点击划过事件的处理
+    // 定时器线程 setTimeout/setInterval等
+    // 异步请求线程 请求数据
+    // 我们常说js是单线程的，这是为什么呢，是因为js在设计之初，浏览器的架构不成熟，而且js的设计就是为了简洁
+    // 而且如果DOM的渲染
+
+
+    // 这个时候就会涉及到Event Loop
+    //     同步任务在js引擎上执行，形成执行栈
+    //     异步任务开启的时候，会放到任务队列上
+    //     只有当js引擎空闲的时候，才会开始读取任务队列，再把任务队列放到执行栈上，开始执行。
+    //     js引擎只会执行，执行栈中的事件，当js空闲的时候才会读取任务队列，在把任务队列放到执行栈中
+
+    // 宏任务，和微任务
+
+    // 【 宏任务》执行完成 】》微任务？"执行微任务》渲染":'渲染' 《》
+
+    // 3、二叉树是一种特殊的树形结构，有这种特点，一个节点只会有两个子节点，而且左节点的值比右节点小
+    //    二叉树如何实现呢，给定一个数组如何转换为二叉树呢？
+    // 比如：
+    /* let arr1=[1,2,3,4,4,5,6,6,7,7,8];
+
+
+         /!*
+         * parameter: data:本节点的数据；
+         * 创建节点示例并插入到二叉树的正确位置
+         *!/
+         function Node(data,left,right){
+             this.data = data;
+             this.left = left;
+             this.right = right;
+         }
+         function BST(){
+             this.root = null;
+             this.insert = insert;
+         }
+         function insert(data){
+             var node = new Node(data,null,null);
+             if(this.root == null){
+                 this.root = node;
+             }else{
+                 var current = this.root;
+                 while(true){
+                     if(current.data > data){
+                         if(current.left === null){
+                             current.left = node;
+                             break;
+                         }
+                         current = current.left;
+                     }else{
+                         if(current.right === null){
+                             current.right = node;
+                             break;
+                         }
+                         current = current.right;
+                     }
+                 }
+             }
+         }
+         var bst = new BST();
+         bst.insert(5);
+         bst.insert(3);
+         bst.insert(7);
+         bst.insert(2);
+
+     console.log(bst)
+
+     function createTree(data) {
+         let res={};
+         res.node=data;
+         res.left=null;
+         res.right=null;
+     }
+     let newTree=[
+         { id: 1, name: '1', parentId: 0},
+
+         { id: 2, name: '1-1', parentId: 1 },
+
+         { id: 3, name: '1-1-1', parentId: 2 },
+
+         { id: 4, name: '1-2', parentId: 1 },
+
+         { id: 5, name: '1-2-2', parentId: 4 },
+
+         { id: 6, name: '1-1-1-1', parentId: 3 }
+
+     ];
+
+         let array = [
+             {
+                 id: 1,
+                 parent_id: 0,
+                 name: "四川省"
+             },
+             {
+                 id: 2,
+                 parent_id: 0,
+                 name: "广东省"
+             },
+             {
+                 id: 3,
+                 parent_id: 0,
+                 name: "江西省"
+             },
+             {
+                 id: 5,
+                 parent_id: 1,
+                 name: "成都市"
+             },
+             {
+                 id: 6,
+                 parent_id: 5,
+                 name: "锦江区"
+             },
+             {
+                 id: 7,
+                 parent_id: 6,
+                 name: "九眼桥"
+             },
+             {
+                 id: 8,
+                 parent_id: 6,
+                 name: "兰桂坊"
+             },
+             {
+                 id: 9,
+                 parent_id: 2,
+                 name: "东莞市"
+             },
+             {
+                 id: 10,
+                 parent_id: 9,
+                 name: "长安镇"
+             },
+             {
+                 id: 11,
+                 parent_id: 3,
+                 name: "南昌市"
+             }
+         ]
+
+         // console.log()
+         // tr(newTree,0)
+     function tr(data,pId) {
+         // let parents = data.filter(value => value.parentId == 'undefined' || value.parentId == null)
+         // let childs = data.filter(value => value.parentId != 'undefined' && value.parentId != null)
+         let obj={},result=[];
+         data.map(value => {
+             obj[value.id]=value
+         });
+         for(let i in data){
+             if(data[i].parentId){
+                 let id=data[i].parentId;
+                 if(id==pId){
+                     result.push(data[i]);
+                 }
+                 // if(obj[id].children){
+                 //     obj[i].children.push(data[i])
+                 // }else{
+                 //     obj[i].children=[data[i]]
+                 // }
+             }
+         }
+         console.log(result)
+
+         return result
+     }
+
+
+
+         function listToTree(list) {
+             let map = {};
+             list.forEach(item => {
+                 if (! map[item.id]) {
+                     map[item.id] = item;
+                 }
+             });
+
+             list.forEach(item => {
+                 if (item.parentId !== 0) {
+                     map[item.parentId].children ? map[item.parentId].children.push(item) : map[item.parentId].children = [item];
+                 }
+             });
+
+             return list.filter(item => {
+                 if (item.parentId === 0) {
+                     return item;
+                 }
+             })
+         }
+         // console.log(listToTree(newTree));
+
+ */
+
+    // 我对树不知道为何有种怎么就是不想明白的感觉，先暂时性放弃。
+
+    // 4、js的Event loop,指的是js的事件循环机制。
+    // 这是一个复杂的概念，从进程，线程 同步任务，异步任务 执行栈，任务队列 宏任务，微任务
+    // 进程是cpu分配资源的最小单位，线程是cpu执行的最小单位
+    // 浏览器的进程大致分为：主进程，GPU进程，第三方插件进程，渲染进程（浏览器内核）;
+    // 前端所做的大多数是在渲染进程中处理。
+    // 渲染进程又包含了以下线程：GUI渲染线程（浏览器渲染，重绘，回流） js引擎线程，异步http请求线程，定时器触发线程，事件处理线程
+    // 渲染线程和js引擎线程是互斥的。
+    // js是单线程的原因是因为当时的硬件条件，多线程不流行，不支持。
+    // js的任务分为同步任务和异步任务。
+    //
+    // 同步任务在js引擎上形成一个执行栈，
+
+    /*     console.log('1');
+         async function async1() {
+             console.log('2');
+             await async2();
+             console.log('3');
+         };
+         async function async2() {
+             console.log('4');
+         };
+         async1();
+         console.log('5');
+         setTimeout(function() {
+             console.log('6');
+         }, 0);
+         new Promise(function(resolve) {
+             console.log('7');
+             resolve();
+         }).then(function() {
+             console.log('8');
+         });
+         console.log('9');*/
+
+    // 1,2,4,5,7,9,3,8,6
+
+    /*    // 递归思想：
+        // 递归指的时候某件事情重复去做，前提条件是 必须有终止条件，过程的描述要包含本身
+
+        // 递归求和 1+2+3+...+n
+        function qh(n) {
+            if(n===1) return 1
+            return qh(n-1)+n
+        }
+        console.log(qh(3))
+*/
+
+    /*
+
+            function debounce(fn,wait){
+                let that=this,time;
+                return function () {
+                    if(time) clearTimeout(time);
+                    time=setTimeout(()=>{
+                        fn.apply(that,arguments)
+                    },wait)
+                }
+            }
+
+            function jl(fn, wait) {
+                let that=this,st=new Date();
+                return function () {
+                    let et=new Date();
+                    if(et-st>wait){
+                        fn.apply(that,arguments);
+                        st=new Date();
+                    }
+                }
+            }
+    */
+
+    /*
+        function _call(context = window) {
+            let fn = Symbol(), result;
+            context[fn] = this;
+            let arg = [...arguments].splice(1);
+            result = context[fn](...arg);
+            delete context[fn];
+            return result
+        }
+
+
+        function _bind(content = window) {
+            let fn = Symbol();
+            content[fn] = this;
+            let arg = [...arguments].splice(1);
+            let that = this;
+            let bindFn = function () {
+                let arg1 = [...arguments];
+                return that.apply(this instanceof bindFn ? this : content, arg.concat(arg1))
+            }
+            bindFn.prototype = that.prototype
+            return bindFn
+        }
+
+
+        function deepCopy(obj) {
+            if (typeof obj !== 'object') return new TypeError('aaa');
+            let result = Array.isArray(obj) ? [] : {};
+            for (let i in obj) {
+                if (obj.hasOwnProperty(i)) {
+                    if (obj[i] && typeof obj[i] === 'object') {
+                        result[i] = this.deepCopy(obj[i])
+                    } else {
+                        result[i] = obj[i];
+                    }
+                }
+            }
+            return result
+        }
+
+        let obj1 = {
+            a: 1,
+            b: function () {
+            },
+            c: Symbol(),
+            d: '11',
+            e: [1, 2, 3]
+        };
+
+
+        function clone(target) {
+            if (typeof target !== 'object') return
+            let result = [];
+            for (let i in target) {
+                result[i] = target[i]
+            }
+            return result
+        }
+
+        let obj2 = clone(obj1)
+        obj2.e.push(4);
+        console.log(obj2);
+        console.log(obj1)
+
+
+        function curry(fn, arg) {
+            arg = arg || [];
+            if (typeof fn !== 'function') return false
+            return function () {
+                let newArg = arg.concat([...arguments]);
+                if (newArg.length < fn.length) {
+                    return curry.call(this, fn, newArg)
+                } else {
+                    return fn.apply(this, newArg)
+                }
+            }
+        }
+
+        function adds(a, b, c) {
+            return a + b + c
+        }
+
+        let add1 = curry(adds);
+        console.log(add1(1)(2)(3))
+
+
+        function _new(obj) {
+            let res = {};
+            if (obj !== null) res.__proto__ = obj.prototype;
+            let arg = [...arguments].splice(1);
+            let result = obj.apply(res, arg);
+            if (typeof result === 'object' || typeof result === 'function' && result !== null) {
+                return result
+            }
+            return res
+        }
+
+
+        // 手写一个promise
+
+        function _promise(constructor) {
+            let that = this;
+            that.status = 'pending';
+            that.resolved = undefined;
+            that.rejected = undefined;
+
+            function resolve(value) {
+                if (that.status === 'resolve') {
+                    that.status = 'resolved';
+                    that.resolved = value
+                }
+            }
+
+            function reject(value) {
+                if (that.status === 'reject') {
+                    that.status = 'rejected';
+                    that.rejected = value
+                }
+            }
+
+            try {
+                constructor(resolve, reject);
+            } catch (e) {
+                reject(e)
+            }
+        }
+
+        _promise.prototype.then = function (onResolved, onRejected) {
+            let that = this;
+            switch (that.status) {
+                case "resolved":
+                    onRejected(that.resolved);
+                case "rejected":
+                    onRejected(that.rejected);
+                default:
+            }
+        }*/
+
+    // 5、js进栈出栈，要理解，首先明白栈的概念，js的存储空间分为 堆和栈，js的数据类型分为基本数据类型和引用数据类型。
+    // 基本数据类型存储在栈内存上，引用数据类型存储在堆内存上。
+    // 常用数组表示
+    // 如何表示进栈出栈呢？
+
+    /*  function Stack(num) {
+          let tempStack=[];
+          this.pop=function () {
+              return tempStack.pop();
+          }
+          this.push=function () {
+               tempStack.push(num);
+          }
+      }
+
+      let newStack=new Stack();
+      newStack.push('1');
+      newStack.push('2');
+      newStack.pop();
+      console.log(newStack)
+
+      */
+    // 6、在vue 和react中使用的是虚拟DOM的算法，什么是虚拟DOM呢，我们知道在页面加载的时候，最耗费性能的就是DOM节点的绘制，而vue或react都是MVVM的数据模型，数据的改变会驱动view的改变，会频繁的触发DOM，这样就带来了很大的性能问题，从而虚拟DOM就出现了，当数据层发生变化的时候，不会直接改变视图层，而是在虚拟的结构发生了改变，只有对比完成后，才真正的驱动view发生变化。
+
+    // 在vue中是如何产生虚拟DOM呢？
+    /*
+
+        function Element(targetName,props,children) {
+            this.targetName=targetName;
+            this.props=props;
+            this.children=children;
+        }
+
+        console.log(location.hostname)
+
+    */
+
+    // 常用的深拷贝，浅拷贝的方法，以及有什么区别呢？
+
+    // 浅拷贝会随着原数据的改变而改变，深拷贝不会，常用的浅拷贝有 Oject.assign() =
+    // 常用的深拷贝有 JSON.parse((JSON.stringify())) 递归
+    // 无法拷贝，undefined，或者函数
+    /*  function deepClone(target){
+          if(typeof target !=='object') return new Error('object')
+          let res=Array.isArray(target)?[]:{};
+          for(let i in target){
+              if(target.hasOwnProperty(i)){
+                  if(target[i]==='object'&&typeof target[i]==='function'){
+                      res[i]=deepClone(target[i])
+                  }else{
+                      res[i]=target[i]
+                  }
+              }
+          }
+          return res
+      }
+
+      function sDeepClone(target) {
+          return JSON.parse(JSON.stringify(target))
+      }
+      const obj1={
+          a:1,
+          b:2,
+          c:undefined,
+          d:function () {
+              return this.a
+          }
+      }
+      const b=deepClone(obj1)
+      console.log(b);*/
+
+    // 一个网址从输入在给用户展示都有哪些过程
+    // 1、查找DNS缓存，和页面缓存，如果有缓存取出缓存里的数据等。
+    // 1、输入网址后，通过DNS解析出对应的ip地址。
+    // 2、建立TCP链接，TCP的三次握手（客户端发送请求，服务端接受请求，服务端处理返回请求，客户端接受请求）;
+    // 3、页面接受数据绘制DOM tree ,css Tree 。
+    // 4、渲染页面，完成绘制，断开链接
+
+    // 回流是十分消耗浏览器性能的，所以要避免回流，有哪些事件会导致回流呢，比如DOM的增删，浏览器窗口大小的改变，元素位置的改变
+    // 那怎么减少回流呢，有几种方案，是元素脱离文档流，在对其进行修改，第二种是拷贝出来元素，修改之后，在复制过去。
+
+    // 重绘又是什么呢，回流必定包含重绘，但重绘不一定会包括回流。
+    // 改变字体大小，设置颜色都会导致重绘
+
+    // 遍历数组，最常用的方式
+
+    // for
+    // for  of
+    // forEach()
+    // map()
+    // filter()
+    // some()
+    // every()
+    //
+    //
+    // 对象遍历
+    // for in
+    // Object.keys()
+    // Object.values()
+
+    // let obj1={a:1,b:2,c:undefined,d:[1,2,3],e:function () {}}
+    // let res=Object.entries(obj1)
+    // console.log(res)
+
+    /*
+        let arrForEach=[1,2,3,4,5];
+        let arrMap1=[1,2,3,4,5]
+       /!* arrForEach.forEach((value, index, array) => {
+
+        })
+        let m1=arrMap1.map((value, index, array) => {
+           return value>2?value:''
+       })
+        console.log(m1)*!/
+       let arr1=[1,2,3,4,5];
+       /!*let arr2= arr1.filter(item=>{
+           return item>2
+       })*!/
+       let arr2=arr1.some(value => {
+           return value>2
+       })
+        console.log(arr2)
+    */
+
+    // https 是由 ssl加密协议+http传输协议组合成的
+
+    /*    var users=[{
+            id:1,name:"a"
+        },{
+            id:2,name:"a"
+        },{
+            id:3,name:"b"
+        },{
+            id:4,name:"v"
+        }];
+        Array.prototype.unique = function () {
+            let that=this;
+            let temp=[],res;
+            this.map(item=>{
+                temp.push(item.name)
+            })
+            res=new Set(temp);
+            console.log(res)
+            return Array.from(res)
+        }
+        console.log(users.unique());*/
+
+    /*
+        缓存的相关问题，缓存和存储方式是有区别的，常见的浏览器缓存有 Exprise   Catch-Control
+        Last-Modified If-Modified-Slince*/
+
+
+
+    // 跨域产生的原因
+    // 同源策略  协议不同，端口不同，主机名不同都是不同源
+    // 举例：http://www.a.com
+    // https://www.a.com
+
+    // JSONP
+    // CORS
+    // iframe+form 进行跨域
+
+    /*
+
+        const requestPost = ({url, data}) => {
+            // 首先创建一个用来发送数据的iframe.
+            const iframe = document.createElement('iframe')
+            iframe.name = 'postAjax'
+            iframe.style.display = 'none'
+            document.body.appendChild(iframe)
+            const form = document.createElement('form')
+            const node = document.createElement('input')
+            // 注册iframe的load事件处理程序,如果你需要在响应返回时执行一些操作的话.
+            iframe.addEventListener('load', function () {
+                console.log('post success')
+            })
+
+            form.action = url
+            // 在指定的iframe中执行form
+            form.target = iframe.name
+            form.method = 'post'
+            for (let name in data) {
+                node.name = name
+                node.value = data[name].toString()
+                form.appendChild(node.cloneNode())
+            }
+            // 表单元素需要添加到主文档中.
+            form.style.display = 'none'
+            document.body.appendChild(form)
+            form.submit()
+
+            // 表单提交后,就可以删除这个表单,不影响下次的数据发送.
+            document.body.removeChild(form)
+        }
+        // 使用方式
+        requestPost({
+            url: 'http://www.xxx.com/api',
+            data: {
+                msg: 'xxxx'
+            }
+        })*/
+
+    // JSONP 跨域只支持get请求
+
+
+    // vue 中的data为什么要以Function 的形式返回呢？
+
+    // 是因为某个组件可能会被其它多个组件引用，如果不以Function的形式返回，某个组件对其修改，会造成其它组件也修改
+
+    // vue组件中data值不能为对象，因为对象是引用类型，组件可能会被多个实例同时引用。如果data值为对象，将导致多个实例共享一个对象，其中一个组件改变data属性值，其它实例也会受到影响。
+    //
+    // 上面解释了data不能为对象的原因，这里我们简单说下data为函数的原因。data为函数，通过return 返回对象的拷贝，致使每个实例都有自己独立的对象，实例之间可以互不影响的改变data属性值。
+
+    // vue 为什么只能有一个根元素呢？ 因为入口就一个   new Vue({
+    //     el:'#app'
+    // })
+    // 那么为什么要使用template 包括一个div呢？
+    //
+    // template 是h5的一个新标签，它有隐藏性，任意性，无效性。
+    // 如果template下面有很多div 没法指定 实例的入口，造成无法渲染。
+
+    // vue的响应式是如何实现的呢？
+    // 通过Object.definePrototype的get set对属性就行拦截，重新设置。
+
+    // 优化性能，按照流程从 html css js 缓存上面讲
+
+    /*    // new的实现
+
+        function _new(fn) {
+            let obj={};
+            let arg=[...arguments].splice(1);
+            obj.__proto__=fn.prototype;
+            fn.apply(obj,arg);
+            return obj
+        }*/
+/*
+
+    function _call(content = window) {
+        let fn = Symbol();
+        let arg = [...arguments].splice(1);
+        content[fn] = this;
+        let res = content[fn](...arg);
+        delete content[fn];
+        return res
+    }
+
+    function _apply(content = window, arg) {
+        let fn = Symbol(), res = undefined;
+        content[fn] = this;
+        if (Array.isArray(arg)) {
+            res = content[fn](arg)
+        } else {
+            res = content[fn]()
+        }
+        delete content[fn];
+        return res
+    }
+
+    function _bind(fn) {
+        let arg = [...arguments].splice(1);
+        let res;
+        let bindFn = function () {
+            let arg1 = [...arguments];
+            return this.apply(this instanceof bindFn ? this : fn, arg.concat(arg1))
+        };
+        bindFn.prototype = this.prototype;
+        return bindFn
+    }
+*/
+
+    /*function debounce(fn,wait) {
+        let arg=[...arguments].splice(1),timeout=undefined;
+        return function () {
+            if(timeout) clearTimeout(timeout);
+            timeout=setTimeout(function () {
+                fn.apply(this,arg)
+            },wait)
+        }
+    }*/
+
+    /*
+    function jl(fn,wait){
+        let st=new Date();
+        let arg=[...arguments].splice(1);
+        return function () {
+            let et=new Date();
+            if(et-st>wait){
+                fn.apply(this,arg);
+                st=new Date();
+            }
+        }
+    }
+    */
+
+    //Q:能讲一下 MVVM吗，M代表了Model，数据层,V代表View，视图层,view-model，数据与视图的桥梁。
+    //A: 数据会绑定到view-model，自动渲染在页面中，当数据发生变化的时候，通过view-model,反馈到视图层，同样视图层发生变化通知数据层发生改变。
+
+    //Q: vue2.0是如何实现数据的双向绑定
+    //A: vue在初始化数据的时候，会使用Object.defineProperty对数据的属性进行拦截,当页面使用这些属性的时候，会进行依赖收集，如果属性发生了变化，在通知依赖更新。
+
+    //Q: 那么vue3.0是如何实现的呢?
+    //A:vuew3.0使用的是proxy对属性进行拦截，为什么使用proxy呢，因为它可以直接监听数组，对象的属性，支持比较好。
+
+    //Q:使用proxy的时候只会对对象的第一层尽量代理，那么如何实现深层次的对象代理呢？
+    // A: 可以通过Reflect.get()判断下面的对象的值是不是对象，如果是对象则调用reactive实现深度监测
+
+    //Q: 在对数组进行拦截的时候，可能会多次调用get和set，那么该如何避免呢？
+    //A: 可以判断当前的key是不是当前代理对象的自身属性，也可以判断旧值和新值是否相等。
+
+    // 那么在vue2.0中是如何对数组进行监听拦截的呢？
+    // 使用了函数劫持的方式，对data中的数组进行了原型链上的重写，指向了重写后的方法。
+
+    // vue3.0 使用proxy代理属性的介绍 https://segmentfault.com/a/1190000020694464
+    // Q:如何判断一个对象上是不是有某个属性呢？
+    // 可以使用 es5 的in 也可以使用 Reflect.has(target,name)
+
+
+
+
+/*
+    let o={
+        name:'xxx',
+        age:13
+    }
+    // console.log(Reflect.has(o,'1'))
+    // console.log('name' in o)
+*/
+
+
+    // vue中的nextTick知道吗？
+    // 在一个DOM更新循环后执行延迟回调。主要分为 宏任务和微任务，如Promise,MutationObserver setImmediate() setTimeout
+
+    // 那么简单的说一下Event Loop
+    // js的任务可以分为 宏任务和微任务，在执行的时候，先执行宏任务，如果遇到微任务，把微任务放入任务队列，等到宏任务执行完，在从任务队列中取出来任务，放入当前执行栈，循环执行
+
+
+    function deepTravelSome(node) {
+        let result=[];
+        let temp=[];
+        if(node){
+            temp.push(node)
+            while (temp.length){
+                let item=temp.shift();
+                let children=item.children;
+                result.push(item)
+                for(let i=0;i<children.length;i++){
+                    temp.push(children[i])
+                }
+            }
+        }
+        return result
+    }
+
+    function _new(fn) {
+        let arg=[...arguments].splice(1);
+        let res={};
+        if(fn!==null){
+            fn.prototype=res.__proto__
+        }
+        let result=fn.apply(this,arg);
+        if(result==='object'||result==='function'&&result!==null){
+            return result
+        }
+        return res
+    }
+
+
+</script>

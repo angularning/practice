@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>改变原数组的方法</title>
+</head>
+<body>
+改变数组的本身
+</body>
+</html>
+
+<script>
+    window.onload=function () {
+        let arr1=[1,2,3,4,5];
+        // arr1.push(1); // 在数组末尾增加
+        // arr1.unshift(); //在数组第一个元素之前增加
+        // arr1.shift();  // 删除数组第一个元素
+        // arr1.pop();     //删除数组最后一个元素
+        // arr1.reverse();    //反转数组
+        // arr1.splice(0,2);  // 删除数组，从什么位置开始，删除几个元素
+        // arr1.fill(100,0,1)   //array.fill(value, start, end)  替换数组中的元素，替换的值，开始位置，结束位置
+
+
+        //------------不修改数组本身
+        // let arr2=arr1.join();   //数组转化为字符串，但是不会修改数组本身
+        // let arr2= arr1.slice(2)  //截取数组，开始位置，结束位置
+
+
+
+        // 循环数组的一些方法
+        let arr3=[];
+      /*  arr1.map((item,index)=>{
+          if(index>2){
+             arr3.push(item)
+          }
+        })*/
+      /*arr1.forEach((item,index,array)=>{
+          if(index>2){
+              arr3.push(item)
+          }
+      })*/
+      /*let res=arr1.reduce(function (a, b) {
+           return a+b
+        })*/
+        // console.log(arr1)
+        // console.log(res)
+    }
+</script>

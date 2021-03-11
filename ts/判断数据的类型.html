@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>判断数据类型</title>
+</head>
+<body>
+<h2>JavaScript的数据类型可以分为两种，基本数据类型和应用数据类型，基本数据类型存储在栈上</h2>
+</body>
+</html>
+<script>
+    window.onload=function(){
+        let arr1=[1,2,4]
+        checkType(arr1)
+        function checkType(v) {
+            console.log(Object.prototype.toString.call(arr1))
+        }
+    }
+</script>

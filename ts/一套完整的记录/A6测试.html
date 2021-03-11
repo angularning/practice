@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A6测试</title>
+</head>
+<body>
+    <section>
+        <pre>
+        new的实现
+        instanceof的实现
+        深拷贝的实现
+        函数柯里化的通用实现
+        节流的实现
+        防抖的实现
+        深度优先遍历的实现
+        广度优先遍历的实现
+        promise的实现
+        数组去重的实现
+        call的实现
+        apply的实现
+        bind的实现
+        原型链继承的实现
+        构造函数继承的实现
+        组合继承的实现
+        原生式继承的实现
+        寄生式继承的实现
+        原生寄生组合式继承的实现
+        Class继承的实现
+        冒泡
+        插入
+        选择
+        归并
+        快速的实现
+        js数据的基本类型
+        数据类型的判断
+        线程和进程
+        Event Loop
+        缓存的几种方式
+        this的概念
+        闭包的概念
+        微任务和宏任务，任务队列，和执行栈
+        Map的概念 weakMap
+        Set的概念 weakSet
+        async的概念
+        Object.defineProperty()
+
+        跨域的解决方案
+        get和post的区别
+        parseInt()的概念
+        for in
+        for of
+        map
+        forEach
+        数组的几种api
+        js的隐式转化的方法
+        let const var 的区别
+
+        Vue
+        vue的生命周期的理解
+        为什么vue中的data是已函数的方式return
+        vue中列表的key的作用
+        vue3.0为什么使用async来监听拦截对象。
+        v-if和v-show的区别
+        MVVM的理解
+        Vue中的nextTick的原理是什么，作用是什么
+        Computed和Watch的区别是什么
+        keep-alive的作用是什么
+        vue的模板编译的原理是什么
+        简单说一下Diff算法的实现
+        vue组件通信的方式
+
+
+        网址输入的过程
+        TCP的几次过程
+        https对比http有什么区别
+
+            用setTimeout实现setInterval【编程】
+            http缓存、强制缓存里面expire和cache-control作用，什么坑【描述】
+重点题，频率很高。expire需要保证时间准确
+            前端路由实现。history什么坑，怎么解决【描述】
+哈希和history，监听事件、切换元素。history会导致一些新路径404，nginx重定向到首页走js逻辑
+
+
+            react
+
+            react的几个生命周期，还有react 16的生命周期对比旧的有什么变化
+            求最大公共前缀 ['aaafsd', 'aawwewer', 'aaddfff'] => 'aa'
+            求最大公共路径前缀['aa/bb/sd', 'aa/bb/wwewer', 'aa/bb/ddfff'] => 'aa/bb'
+        </pre>
+    </section>
+</body>
+</html>
+<script>
+    let arr1=['aa/bb/sd', 'aa/bb/wwewer', 'aa/bb/ddfff'];
+    function f1(arr) {
+        // 对比第一个字母相同？对比第二个？对比第三个。。。如果不相同则停止，取出i。
+        let res='';
+        if(arr.length<=1) return arr.join('')
+        for(let i=0;i<arr[0].length;i++){
+            for(let j=1;j<arr.length;j++){
+                if(arr[0][i]!==arr[j][i]){
+                    return res
+                }
+            }
+            res+=arr[0][i]
+        }
+        return res
+    }
+    var longestCommonPrefix = function(strs) {
+        let res='';
+        if(strs.length<=1) return strs.join('')
+        for(let i=0;i<strs[0].length;i++){
+            for(let j=1;j<strs.length;j++){
+                if(strs[0][i]!==strs[j][i]){
+                    return res
+                }
+            }
+            res+=strs[0][i];
+        }
+        return res
+    };
+    console.log(f1(arr1))
+
+    /*
+        function Foo() {
+            getName = function () { alert (1); };
+            return this;
+        }
+        Foo.getName = function () { alert (2);};
+        Foo.prototype.getName = function () { alert (3);};
+        var getName = function () { alert (4);};
+        function getName() { alert (5);}
+
+        //请写出以下输出结果：
+        Foo.getName();   2
+        getName();  4
+        Foo().getName();  1
+        getName(); 1
+        new Foo.getName(); 2
+        new Foo().getName(); 3*/
+    // new new Foo().getName();
+
+    let arr=[1,2,3,1,2];
+        [1,2,3]
+    function qc1(arr){
+        return [...new Set(arr)];
+    }
+
+
+    function qc2(arr){
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            if(res.indexOf(arr[i])<0){
+                res.push(arr[i])
+            }
+        }
+        return res
+    }
+
+
+    function qc3(arr){
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            for(let j=i+1;j<arr.length;j++){
+                if(arr[i]===arr[j]){
+                    j=++i
+                }
+            }
+            res.push(arr[i])
+        }
+        return res
+    }
+
+
+    function qc4(arr){
+        let obj={},res=[];
+        for(let i=0;i<arr.length;i++){
+            obj[arr[i]]=arr[i];
+        }
+        return Object.values(obj)
+    }
+
+    console.log(qc4(arr))
+
+
+
+</script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转化驼峰</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    window.onload=function () {
+        let s1 = "get-element-by-id";
+        console.log(ChangeStr(s1))
+        function ChangeStr(str) {
+            let arr=[...str];
+            let newArr=[];
+            arr.filter((item,index,array)=>{
+                if(item==='-'){
+                    array[index+1]=array[index+1].toUpperCase()
+                }else{
+                    newArr.push(item)
+                }
+            });
+            return newArr.join('')
+        }
+    }
+</script>

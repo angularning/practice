@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>思路题目</title>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        h2 {
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        ul > li {
+            margin-left: 4%;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h2>css</h2>
+    <ul>
+        <li>
+            1、link和@import的区别
+            <div>
+                <pre>
+
+                </pre>
+            </div>
+        </li>
+        <li>
+            2、如何实现不定宽高的居中
+        </li>
+        <li>
+            3、css3新增的一些标签、属性，请介绍一下
+        </li>
+        <li>
+            4、清除浮动的几种方式
+        </li>
+        <li>
+            5、如何用css画一个三角形
+        </li>
+        <li>
+            6、media 的用法
+        </li>
+    </ul>
+    <h2>js</h2>
+    <ul>
+        <li>
+            1、数组去重
+        </li>
+        <li>
+            2、节流和防抖的实现，用法
+        </li>
+        <li>
+            3、call，apply，bind的用法，以及实现
+        </li>
+        <li>
+            4、浏览器输入网址的一个访问过程。
+        </li>
+        <li>
+            5、阶乘和斐波那契数列的实现
+        </li>
+        <li>
+            6、js的数据类型
+        </li>
+        <li>
+            7、ES6新增的一些属性
+        </li>
+        <li>
+            8、继承的几种方式以及实现过程
+        </li>
+        <li>
+            9、简单讲解一下，实例，原型，原型链的关系和过程。
+        </li>
+        <li>
+            10、几种循环方法的区别，比如 for，map，forEach
+        </li>
+        <li>
+            11、Promise的用法
+        </li>
+        <li>
+            12、async和await的用法
+        </li>
+        <li>
+            13、几种数据存储方式的区别，用法。
+        </li>
+        <li>
+            14、Ajax的get和post的区别 push
+        </li>
+        <li>
+            15、判断数据类型，Object.prototype.call.toString()
+        </li>
+        <li>
+            16、http的几种状态码，最常用的你知道有几种
+        </li>
+        <li>
+            17、typeof Undefined typeof Null
+        </li>
+        <li>
+            18、闭包的理解，以及用处
+        </li>
+        <li>
+            19、柯里化的函数的通用实现
+        </li>
+        <li>
+            19-1、实现累加，阶乘，斐波那契数列
+        </li>
+        <li>
+            20、instanceOf的用法以及实现
+        </li>
+        <li>
+            21、js中几种隐式转换
+        </li>
+        <li>
+            22、数组的常用方法，请举例
+        </li>
+        <li>
+            23、let const，var的区别
+        </li>
+        <li>
+            24、parseInt的用法
+        </li>
+        <li>
+            25、手动实现一个promise（不简单）
+        </li>
+        <li>
+            26、手动实现new的操作
+        </li>
+        <li>
+            27、cookie的相关操作，以及封装
+        </li>
+    </ul>
+</div>
+</body>
+</html>
+<script>
+
+
+    //1、数组去重
+    /*  let arr1=[1,2,3,4,1,2,undefined,null,5,undefined,function a(){},function a(){}]
+      function qc1(arr) {
+          return [...new Set(arr)]
+      }
+      function qc2(arr){
+          let result=[];
+          for(let i=0;i<arr.length;i++){
+              if(result.indexOf(arr[i])<0){
+                  result.push(arr[i])
+              }
+          }
+          return result
+      }
+      function qc3(arr){
+          let res=[];
+          for(let i=0;i<arr.length;i++){
+              for(let j=i+1;j<arr.length;j++){
+                  if(arr[i]===arr[j]){
+                      j=++i
+                  }
+              }
+              res.push(arr[i])
+          }
+          return res
+      }
+      console.log(((new Date()).getMonth+1))
+      console.log((new Date()).getFullYear()+'-'+(new Date()).getDate())
+      */
+    /*
+        // 2、节流防抖的作用
+        // 节流和防抖常用于经常触发的事件，比如页面滚动，多次点击，窗口缩放等。
+        function deBounce(fn,wait){
+            let time;
+            return function () {
+                let that=this,arg=arguments;
+                if(time) clearTimeout(time);
+                time=setTimeout(function () {
+                    fn.apply(that,arg)
+                },wait)
+
+            }
+        }
+        function throttling(fn,wait) {
+            let that=this,st=new Date();
+            return function () {
+                let et=new Date(),arg=arguments;
+                if(et-st>wait){
+                    fn.apply(that,arg);
+                    st=new Date()
+                }
+            }
+        }
+
+        */
+
+    /*
+    // 3、call 和apply，和bind的用处是都可以改变this的指向，区别在于apply 参数是数组，call，参数是string，bind需要执行
+     // _1、实现call
+     function _call(content=window){
+         let fn=Symbol();
+         content[fn]=this;
+         let arg=[...arguments].splice(1);
+         let result=content[fn](...arg);
+         delete content[fn]
+         return result
+     }
+     function _apply(content=window,arg) {
+         let f=Symbol(),result;
+         content[f]=this;
+         if(Array.isArray(arg)){
+             result=content[f](arg);
+         }else{
+             result=content[f];
+         }
+         delete content[f]
+         return result
+
+     }
+
+     Function.prototype._bind=function (content) {
+         let that=this;
+         let arg=[...arguments].splice(1);
+         const bindFn= function () {
+             let arg1=[...arguments];
+             return that.apply(this instanceof bindFn ? this:content,arg.concat(arg1))
+         }
+         bindFn.prototype=that.prototype
+         return bindFn
+     }
+
+
+
+     const obj = {
+         value: 'hdove'
+     }
+
+     function fn1(name, age) {
+         console.info([...arguments])
+         this.test = '我是测试数据';
+         console.log(this.value);
+         console.log(name);
+         console.log(age);
+     }
+     fn1._bind(obj,'xiao',123)(1,2,3)
+
+     function fn(name, age) {
+         this.test = '我是测试数据';
+     }
+
+     fn.prototype.pro = '原型数据';
+
+     var bindFn = fn._bind(obj, 'LJ', 25);
+
+     var newBind = new bindFn();
+
+     console.log(newBind.pro); // undefined
+
+
+     function bind1(content) {
+         let that=this,arg=[...arguments].splice(1);
+         let bindFn=function () {
+             let arg1=[...arguments];
+             return that.apply(this instanceof bindFn?this:content,arg.concat(arg1))
+         }
+         bindFn.prototype=that.prototype
+         return bindFn
+     }
+ */
+
+    // 4、一个域名从被输入到显示都经历了什么，简单可以这么理解。
+    //  （1）、输入域名通过DNS解析出来IP地址。
+    //    （2）、 建立TCP链接 三次握手
+    // （3）、根据ip地址想对应的服务器发起http请求。
+    // （4）、服务器接收请求，并处理请求，返回数据。
+    //    （5）、关闭连接
+    //    （6）、浏览器接收返回的数据，渲染页面
+
+    /*
+
+        // 5、阶乘的实现，以及斐波那契数列，这个用到的是递归要熟练的使用递归。
+
+        function jc1(num) {
+            if(num<=1){
+               return num=1
+            }else{
+                return num*jc1(num-1)
+            }
+        }
+        console.info(jc1(5))
+
+        // 斐波那契数列指的是这样的数列
+        // 1 1,2,3,5,8,13
+        // 最后的数等于前两个相加
+
+        function fbnq(n) {
+            if(n===1) return 1
+            if(n===2) return 2
+            if(n>=3){
+                return fbnq(n-2)+fbnq(n-1)
+            }
+        }
+        console.log(fbnq(6))
+    */
+
+    /*
+
+        // 6、js的数据类型可以分为基本数据类型和引用数据类型。
+        // String Number Boolean Null Undefined Symbol
+        // Object  Array Function
+    */
+
+
+    // 7、ES6新增了很多属性方法，常用的有如下：
+    // let const 箭头函数，Symbol类型的数据类型，Map,Set数据
+
+    // 8、继承的简单几种实现，原型链继承，构造函数继承，组合继承 ES6的Class继承。
+
+    /*  // 原型链继承：代码实现
+      //    _1、
+              function a(name) {
+                  this.name=name
+              }
+              a.prototype.getName=function () {
+                  return this.name
+              }
+              function b(name) {}
+              b.prototype=new a('小王');
+              let c=new b();
+              console.log(c.getName())
+              // 概念：将b的原型指向a的实例，实现了继承 a的属性和方法都会挂载到b的原型上。
+              // 问题：子类无法像父类传参数
+  //              */
+    /*
+    //         _2、构造函数继承
+
+            function a() {
+                this.name = ['小a','小b']
+            }
+            a.prototype.getName = function () {
+                return this.name
+            }
+            function b() {
+                a.apply(this, arguments)
+            }
+            let c = new b();
+            c.name.push('xiaoc');
+            console.log(c.name)
+            let c1=new b()
+            console.log(c1.name)
+
+            // 核心在于 父类.apply(this)
+            // 1、不同的引用类型的属性在不同的实例之间不会互相影响。2、可以像父类传参数
+            // 问题：每次创建实例的时候都会重新调用构造函数
+            */
+
+    /* let obj={
+         name:'xxx'
+     }
+     const name='b'
+     function f1() {
+         console.log(this.name)
+     }
+     // f1()
+     f1.apply(obj,['aaa,fff'])
+     */
+
+    /*
+    // 3、 _组合继承
+    // 概念：把原型链继承和构造函数继承结合起来，结合其优点。
+    function a(name) {
+        this.name=name
+    }
+    a.prototype.getName=function () {
+        return this.name
+    }
+    function b() {
+        a.apply(this)
+    }
+    b.prototype=new a();
+    let c=new b();
+    */
+    /*
+       // 4、原型式继承
+       function createObj(obj) {
+           let newFn = function () {
+           }
+           newFn.prototype = obj
+           return new newFn()
+       }
+
+       let a = {
+           name: 'xx',
+           age: 19
+       }
+       let b = createObj(a);
+       let b1 = createObj(a)
+       b.name='x'
+
+       console.log(b.name)
+                   console.log(b1.name)
+
+
+       var person = {
+           name: '111',
+           friends: ['a', 'b']
+       }
+
+       var person1 = createObj(person);
+       var person2 = createObj(person);
+
+       console.log(person1.__proto__)
+       person1.name = '222';  //并不适合修改person的prototype上的name值，只适合 person1.name='赋值'
+       console.log(person2.name); // 111
+
+       person1.friends.push('c');
+       console.log(person2.friends); // ["a", "b", "c"]
+
+   */
+    /*
+        // 5、寄生式继承
+        // 概念：相当于把原型式继承使用object.create()
+        function createObj(o) {
+            let newFn=Object.create(o);
+            newFn.prototype.getName=function () {
+                return this.name
+            }
+            return newFn
+        }
+    */
+    /*  // 6、寄生组合式继承
+      function a(name) {
+          this.name=name
+      }
+      a.prototype.getName=function () {
+          return this.name
+      }
+      function b() {
+          a.apply(this)
+      }
+      function Fn(){};
+      Fn.prototype=a.prototype;
+      b.prototype=new Fn();
+      let c=new b();
+
+
+
+
+      */
+
+    /*
+        function a(name){
+            this.name=name;
+            this.number=[1,2,3]
+        }
+        a.prototype.getName=function(){
+            return this.name
+        }
+        function b(){
+            console.log(this.name)
+        }
+        b.prototype=new a('x');
+        let c=new b();
+        c.number.push(4)
+        let c1=new b();
+        console.log(c.number)
+        console.log(c1.number)*/
+    /*
+
+        function a(name){
+            this.name=name
+        }
+        a.prototype.getName=function(){
+            return this.name
+        }
+        function b(name){
+            a.call(this,name)
+        }
+        let c=new b('xx');
+        let c1=new b('xxxx')
+        console.log(c.name)
+        console.log(c1.name)
+
+
+    */
+    /*
+
+        function a(name){
+            this.name=name;
+        }
+        a.prototype.getName=function(){
+            return this.name
+        }
+        function b(name){
+            a.call(this,name);
+        }
+        b.prototype=new a();
+        let c1=new b('x');
+        let c2=new b('xx');
+        c1.name='xxx'
+        console.log(c1.name); // xxx
+        console.log(c2.name); //xx
+
+    */
+
+    /*
+
+        function createObj(obj){
+            let newFn=function(){};
+            newFn.prototype=obj;
+            return new newFn()
+        }
+        let a={
+            name:'x',
+            num:[1,2]
+        }
+
+        let c1=createObj(a);
+        let c2=createObj(a);
+        c1.num.push(3)
+        console.log(c1.num);
+        console.log(c2.num)
+
+
+    */
+
+
+    /*
+
+        function create(o){
+            let res=Object.create(o);
+            res.getNum=function (num) {
+                console.log(num)
+            }
+            return res
+        }
+        let a={
+            name:'x',
+            num:[1,2]
+        };
+        let c1=create(a);
+        let c2=create(a);
+        c1.num.push(3);
+        c2.num.push(4);
+        console.log(c1.num); //[1,2,3,4]
+        console.log(c2.num);//[1,2,3,4]
+    */
+
+    /*
+
+    function aAndB(child,parent) {
+        let pro=Object.create(parent.prototype);
+        pro.constructor=child;
+        child.prototype=pro
+    }
+    function Parent(name) {
+        this.name=name;
+    }
+    Parent.prototype.getName=function () {
+        return this.name
+    }
+    function Child() {
+        Parent.apply(this);
+    }
+    aAndB(Child,Parent);
+
+
+    */
+    /*
+    class a {
+        constructor(name){
+            this.name=name;
+        }
+        getName(){
+            return this.name
+        }
+    }
+    class b extends a{
+        constructor(name){
+            super(name);
+            this.name=name;
+        }
+        names() {
+            return super.getName();
+        }
+    }
+    let c= new b('xx');
+    console.log(c.names())*/
+
+
+    // 9、主要需要理解几者的关系
+    /*  Object.prototype.__proto__===null;
+      Object.__proto__=Function.prototype;
+      function F() {} //这叫做函数，分为构造函数和普通函数
+      let f=new F(); //f叫做一个实例对象
+      F.prototype===f.__proto__ ; //这两者是相等的
+      F.prototype.constructor===F*/
+    // 原型链指的：
+    /*
+
+        function a() {
+        }
+
+        let b = new a();
+        console.log(b.__proto__ === a.prototype)
+
+        let arr = new Array(5);
+
+        // arr.length=5;
+        function randoms(min, max) {
+            switch (arguments.length) {
+                case 1:
+                    return parseInt(Math.random() * min + 1, 10)
+                case 2:
+                    return parseInt(Math.random() * (max - min + 1) + min, 10)
+            }
+        }
+
+        let num = randoms(2, 32);
+        let i = 0;
+
+        function abc(arr, num) {
+            if (!arr.includes(num)) {
+                arr[i] = num;
+                i++
+            } else {
+                num = randoms(2, 32)
+            }
+            if (i < arr.length) {
+                abc(arr, num)
+            } else {
+                return;
+            }
+        }
+        abc(arr, num)
+        console.log(arr)
+    */
+    /*    var A = function() {};
+        A.prototype.n = 1;
+        var b = new A();
+        A.prototype = {
+            n: 2,
+            m: 3
+        }
+        var c = new A();
+
+        console.log(b.n);
+        console.log(b.m);
+
+        console.log(c.n);
+        console.log(c.m);*/
+    /*
+    var F = function() {};
+
+      Object.prototype.a = function() {
+          console.log('a');
+      };
+
+      Function.prototype.b = function() {
+          console.log('b');
+      }
+
+      var f = new F();
+
+      f.a();
+      f.b();
+      F.a();
+      F.b();
+      */
+    /* function Person(name) {
+         this.name = name
+     }
+     let p = new Person('Tom');
+     console.log(p.__proto__)
+     console.log(Person.prototype)
+ */
+    /*
+
+    var foo = {},
+        F = function(){};
+    Object.prototype.a = 'value a';
+    Function.prototype.b = 'value b';
+
+    console.log(foo.a);
+    console.log(foo.b);
+
+    console.log(F.a);
+    console.log(F.b);
+
+    */
+    /*
+
+        console.log(Function.prototype.__proto__==Object.prototype)
+        console.log(Object.__proto__==Function.prototype)
+    */
+
+    /*
+        // 10、Promise()
+        // Promise的作用是什么，用法，如何实现
+        // Promise是JavaScript中异步的一种实现。有三种状态，resolve，reject,pedding状态，处于前两种的状态无法改变状态。
+        // 如何使用Promiese封装一个请求呢
+
+    /!*    let promise=new Promise((resolve, reject) => {
+            if('成功'){
+                resolve()
+            }else{
+                reject()
+            }
+        });
+        promise.then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })*!/
+      /!*  let promise1=new Promise(resolve => {
+            setTimeout(()=>{
+                resolve('1')
+            },100)
+        })
+        let promise2=new Promise(resolve => {
+            setTimeout(()=>{
+                resolve('2')
+            },1000)
+        })
+        // Promise.race([promise1,promise2]).then(item=>{
+        //     console.log(item)
+        // })
+        Promise.all([promise1,promise2]).then(res=>{
+            console.log(res)
+        })
+    *!/
+        // 那么重头戏来了，如何实现Promise呢
+
+      /!*  function _Promise(content) {
+            let that=this;
+            that.status='Pending';
+            that.resolved=undefined;
+            that.rejected=undefined;
+            function resolve(value) {
+                if(that.status==='Pending'){
+                    that.resolved=value;
+                    that.status='resolved';
+                }
+            }
+            function reject(value) {
+                if(that.status==='Pending'){
+                    that.rejected=value;
+                    that.status='rejected';
+                }
+            }
+            try{
+                content(resolve,reject)
+            }catch (e) {
+                reject(e)
+            }
+        }
+        _Promise.prototype.then=function (onResolve,onReject) {
+            let that=this;
+            if(that.status==='resolved'){
+                onResolve(that.resolved)
+            }
+            if(that.status==='rejected'){
+                onReject(that.rejected)
+            }*!/
+
+      */
+
+    /*
+            ///yi下使用 switch case
+            switch (that.status) {
+                case 'resolved' :
+                    onResolve(that.resolved);
+                    break;
+                case "rejected":
+                    onReject(that.rejected);
+                    break;
+                default:
+            }
+        }
+            */
+
+    // 11、async await的用法，以及会考察的点
+    // 一般来说，会把几个异步处理的放一起，问执行顺序先后的问题。
+    // 之所以这么问考察的地方就是JavaScript的Event Loop处理机制。
+    // 下面我列几个概念，进程和线程 宏任务和微任务，堆和栈，真正理解了会有很大的收获
+
+    // 用法：
+    /*
+
+        async function async1(){
+            console.log('async1 start')  //2
+            await async2()
+            console.log('async1 end')   //6
+        }
+        async function async2(){
+            console.log('async2')    //3
+        }
+        console.log('script start')  // 1
+        setTimeout(function(){
+            console.log('setTimeout')   //8
+        },0)
+        async1();
+        new Promise(function(resolve){
+            console.log('promise1')   //4
+            resolve();
+        }).then(function(){
+            console.log('promise2')   //7
+        })
+        console.log('script end')   //5
+
+    */
+
+    /* async function async1(){
+         console.log('async1 start')   //2
+         await async2()
+         console.log('async1 end')   //6
+     }
+     function async2(){ // 去掉了 async 关键字
+         console.log('async2');  //3
+     }
+     console.log('script start')   //1
+     setTimeout(function(){
+         console.log('setTimeout')  //8
+     },0)
+     async1();
+     new Promise(function(resolve){
+         console.log('promise1')   //4
+         resolve();
+     }).then(function(){
+         console.log('promise2')  //7
+     })
+     console.log('script end')   //5*/
+
+
+    // 13、几种数据存储方式以及优缺点，客户端如何与前端进行通信呢，比如Ios和前端的通信。
+    // sessionStorage,localStorage,cookie
+    // sessionStorage在浏览器窗口关闭后会消失，属于会话级的存储，存储大小和localStorage一样，大概在5M左右
+    // localStorage会永久的存储，如果不主动删除不会消失
+    // cookie是服务端的一种缓存，多用于客户端与服务端通信的时候。
+
+
+    /*
+    let xiaohongshu='暖洋洋～山山妈发布了一篇小红书笔记，快来看吧！😆 zUBiNLTBQnFtYrI 😆 http://xhsurl.com/fETtp，复制本条信息，打开【小红书】App查看精彩内容！！'
+    let douyin='#在抖音，记录美好生活#小丑：“我只是想改变世界” #宅家dou剧场 https://v.douyin.com/nwUE2A/ 复制此链接，打开【抖音短视频】，直接观看视频！'
+    let kuaishou='@橘🍊呀 发了一个快手作品，一起来看！泰梨院 成年了哦～ https://v.kuaishou.com/s/pBLZsplG 复制此链接，打开【快手App】直接观看！「在快手，看见每一种生活」'
+    let meipai='你小时候做过这些事么？#搞笑##学生##百变星人计划# http://www.meipai.com/media/1187784527?client_id=1089857299&utm_media_id=1187784527&utm_source=meipai_share&utm_term=meipai_ios&gid=618220730'
+    let weishi='还记得上周躺在病床上欣赏落日余晖的87岁老爷爷吗？如今老人已经可以下床啦！#全民阻击>>https://h5.weishi.qq.com/weishi/feed/74EVRNzHZ1JcDFBsb/wsfeed?wxplay=1&id=74EVRNzHZ1JcDFBsb&collectionid=1bc8fe60a09dce07a4c5ce449b3c16bf&spid=1577160623900554&qua=v1_iph_weishi_6.5.5_655_app_a&chid=100081003&pkg=&attach=cp_reserves3_1000370721'
+    let ppx='https://h5.pipix.com/s/nw2WWv/'
+    let weibo='分享 @游戏最强音 的微博小视频 PDD滑板鞋伤害这么高？\n' +
+        '\n' +
+        '【#英雄联盟 最佳电竞##LPL春季赛#】  ​ https://m.weibo.cn/s/video/index?object_id=1034:4481219220668448&segment_id=&blog_mid=4481323957927011'
+    function jqs(e) {
+        return e.substring(e.indexOf('http'),e.indexOf('复制'))
+    }
+    function jxUrl(url){
+        let u='';
+        if(url.indexOf('douyin')>-1){
+            u=url.substring(url.indexOf('https://v.douyin'),url.indexOf('复制此链接'))
+        }
+        if(url.indexOf('kuaishou')>-1){
+            u=url.substring(url.indexOf('https://v.kuaishou'),url.indexOf('复制此链接'))
+        }
+        if(url.indexOf('xhsurl')>-1){
+            u=url.substring(url.indexOf('http://xhsurl'),url.indexOf('，复制本'))
+        }
+        if(url.indexOf('meipai')>-1){
+            u=url.substring(url.indexOf('http://www.meipai'),url.length)
+        }
+        if(url.indexOf('weishi')>-1){
+            u=url.substring(url.indexOf('https://h5.weishi'),url.length)
+        }
+        if(url.indexOf('h5.pipix')>-1){
+            u=url
+        }
+        if(url.indexOf('https://m.weibo')>-1){
+            u=url.substring(url.indexOf('https://m.weibo'),url.length)
+        }
+        return u
+    }
+   console.log(jxUrl(meipai))
+   */
+
+    /* // 14、ajax中有很多种请求方式，最常用的是get post put delete
+     // 区别在于参数的方式不同，get通常是拼接在url后面
+     // 举例：
+     $.ajax({
+         url:'test.php?data='+'user=123&id=123',
+         type:'get',
+         dataType:'JSON',
+         success:function (res) {
+
+         },
+         error:function (err) {
+
+         }
+     })
+     $.ajax({
+         url:'test.php',
+         type:'post',
+         data:{...},
+         dataType:'JSON',
+         success:function (res) {
+
+         },
+     })
+ */
+    /*
+
+       // 15、js最常用的判断数据类型有很多种方法实现
+        // typeof
+        console.log(typeof null)  //object
+        console.log(typeof Object)  //function
+        console.log(typeof Function)  //function
+        // tanceof
+        // Object.prototype.call.toString();
+        // ===
+    /!*
+        // instanceof 的原理是什么呢？是从原型链上查找，看能不能找到对应的原型属性。
+        // 举例：
+        let arr1=[1,2,3];
+        let obj1={};
+        let fn1=function(){};
+        // console.log(obj1 instanceof Object)
+        // 那如何实现呢？
+        function _instanceof(left,right) {
+            let proto=left.__proto__;
+            let prototype=right.prototype;
+            while (true){
+                if(proto===null){
+                    return false
+                }
+                if(proto===prototype){
+                    return true
+                }
+                proto=proto.__proto__;
+            }
+        }
+        console.log(_instanceof(fn1,Function))
+
+        console.log(_instanceof(obj1,Function))
+        console.log(_instanceof(Function,Function)) //true
+        console.log(_instanceof(Function,Object)) // true
+        console.log(_instanceof(Object,Function)) // true
+    *!/
+    */
+
+
+    // 16、http常用的几种状态码
+    // 200
+    // 201
+    // 304
+    // 403
+    // 404
+    // 405
+    // 500
+    // 501
+
+
+    // 18、闭包的理解
+    // 闭包指的是在一个函数中可以访问另外一个函数中的变量的概念
+    // 闭包的作用，保存变量，保护变量
+    // 缺点是什么呢，会造成内存泄露，因为某个变量一直保存在内存中长期使用。
+    // 举例：
+    /* function a1() {
+         let a=1;
+         function a2() {
+             console.log(a)
+         }
+         a2();
+     }
+     a1()
+ */
+    /*  for (var i = 1; i < 10; i++) {  //var 换做 let
+          setTimeout(function () {
+              console.log(i);  // 10 *9
+          }, 1000);
+      }*/
+    /*
+
+        for(var i=1;i<10;i++){
+            (function (j) {
+                setTimeout(function () {
+                    console.log(j);
+                }, 1000);
+            })(i)
+        }
+    */
+
+    // console.log([] == ![] )
+
+    // 19、函数柯里化的概念是，多个变量的函数变成单个变量的函数并且函数的结果返回的是一个函数.
+    // 举例：
+    /*  function add(x) {
+          return function (y) {
+             return  x+y
+          }
+      }
+      console.log(add(1)(2))
+  */
+    /* // 斐波那契数列
+       // 1,2,3,5,8,13,21
+       function fb(n) {
+           if(n===1) return 1
+           if(n===2) return 1
+           if(n>2){
+               return fb(n-1)+fb(n-2)
+           }
+       }
+       console.log(fb(5))*/
+    // 函数柯里化的通用实现
+      function curry(fn, arg) {
+          arg = arg || [];
+          let length = fn.length;
+          if (typeof fn !== 'function') return false
+          return function () {
+              let newArg = arg.concat(Array.prototype.slice.call(arguments));
+              if (newArg.length < length) {
+                  return curry.call(this,fn,newArg)
+              }else{
+                  return fn.apply(this,newArg)
+              }
+          }
+      }
+
+      // add1(1)(2)(3); //6
+      // add1(1,2,3);   //6
+      // add1(1)(2,3);  //6
+     function add2(a,b,c) {
+         return a+b+c
+     }
+     let add1=curry(add2)
+     console.log(add1(1,2,3))
+     console.log(add1(1)(2)(3))
+     console.log(add1(1)(2,3))
+    /*
+
+      function jc(n) {
+          if(n===1) return 1;
+          if(n>=2){
+              return n*jc(n-1)
+          }
+      }
+      console.log(jc(3))
+    */
+    /*
+        // 20、instanceof的实现
+        function _instanceof(left, right) {
+            let _proto_=left.__proto__;
+            let prototype=right.prototype;
+            while (true){
+                if(_proto_===null){
+                    return false
+                }
+                if(_proto_===prototype){
+                    return true
+                }
+                _proto_=_proto_.__proto__
+            }
+        }
+
+    */
+    // 21、js中的几种隐式转化
+    // ==
+    // toString()
+    // parseInt()
+    // 举例：
+    // let num=15;
+    // console.log(parseInt(12))
+    // console.log([1,2,3].map(parseInt))
+
+    // let 和const是声明在块级作用域中。不能声明同名变量
+    /*// 比如：
+    let b=1;
+    console.log(b)
+    let b=2;
+    console.log(b)*/
+    ///Uncaught SyntaxError: Identifier 'b' has already been declared
+    /*   // 比如：
+       var a=1;
+       console.log(a)
+       var a=2;
+       console.log(a)
+   */
+    /* // 不会存在变量提升。
+     // var 定义的变量会定义在windows上，存在着变量提升。
+
+     // 比如：
+     var a=2;
+     function f() {
+         a=3
+     }
+     f();
+     console.log(a)*/
+
+    // const a=1;
+    // if(true){
+    //     a=2
+    // }
+    // 24、parseInt是类型转化的一种,把字符串转化为数字
+    // 举例：
+    // console.log(parseInt('15') )
+    // 最常见的问题：
+    // console.info([1,2,3].map(parseInt))
+    /*['1','2','3'].map((value, index, array) => {
+
+    })*/
+    // console.log(['2','5','11'].map(parseInt))
+    // 2,NaN,3
+    // map返回的有三个值
+    // value，index,array
+    // parseInt 接收的有两个值，string，基数
+    // 进制 2 进制 10进制 16进制
+
+
+    // console.log(0.1+0.2)
+    // console.log(1.1+0.2)
+    // console.log(0.0625+0.125)
+
+    // 25、手动实现一个promise的操作。
+    // 举例：
+
+    // 在实现之前要先明白promise的作用，有三种状态，pending，resolve，reject
+    // 状态不可逆    pending可以到成功或者失败，但成功或者失败不能到其它状态
+    // promise中是同步执行，需要通过 then，异步执行、
+
+    /*
+     let promise=new Promise((resolve, reject) => {
+           if(true){
+               resolve('value')
+           }else{
+               reject('error')
+           }
+       })
+       promise.then(res=>{
+           console.log(res)
+       }).catch(err=>{
+           console.log(err)
+       })
+
+   */
+    /*
+    function myPromise(constructor) {
+        let that = this;
+        that.status = 'pending';
+        that.resolved = undefined;
+        that.rejected = undefined;
+
+        function resolve(value) {
+            if (that.status === 'pending') {
+                that.status = 'resolved';
+                that.resolved = value;
+            }
+        }
+
+        function reject(value) {
+            if (that.status === 'pending') {
+                that.status = 'rejected';
+                that.rejected = value;
+            }
+        }
+
+        try {
+            constructor(resolve, reject)
+        } catch (e) {
+            reject(e)
+        }
+    }
+
+    myPromise.prototype.then = function (onResolved, onRejected) {
+        let that = this;
+        switch (that.status) {
+            case "resolved":
+                onRejected(that.resolved);
+                break
+            case "rejected":
+                onRejected(that.rejected);
+                break
+            default:
+
+        }
+    }
+
+*/
+   /*
+    // 26、New的操作是创建一个空对象，指定this，然后把这个对象的原型绑定在旧对象，在返回这个对象。
+
+    function _New(func) {
+        let res={};
+        if(func !==null){
+            res.__proto__=func.prototype;
+        }
+        let arg=[...arguments].splice(1);
+        let result=func.apply(res,arg);
+        if((typeof result==='object'||typeof result==='function')&&result!==null){
+            return result
+        }
+        return res
+    }
+
+    function a1(name,age){
+        this.name=name;
+        this.age=age;
+    }
+    let b=new a1('x',18)
+    console.log(b)
+    console.log(a1.prototype===b.__proto__)
+
+    let c=_New(a1,'xxx',20)
+    console.log(c)
+*/
+
+// 12345678910111213
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>递归调用的实践</title>
+</head>
+<body>
+<div>
+    细胞分裂 有一个细胞 每一个小时分裂一次，一次分裂一个子细胞，第三个小时后会死亡。那么n个小时有多少细胞？
+    这个问题的核心就是三个小时为一个周期
+</div>
+<script>
+                        // 0:{a:1,b:0,c:0}
+                        // 1:{a:1,b:1,c:0}
+                        // 2:{a:1+1,b:1,c:1}
+                        // 3:{a:1+1,b:1+1,c:1}
+                        // 4:{a:1+1+1+1,b:1+1,c:1+1}
+    // 把细胞分为三种状态 a 初始 a+b+c , b 幼年 a ,c 成熟 b
+
+    function getAll(t) {
+        function aCell(t) {
+            if(t===1) return 1;
+            if(t>1){
+                return aCell(t-1)+bCell(t-1)+cCell(t-1)
+            }
+        }
+        function bCell(t) {
+            if(t===1) return 0;
+            if(t===2) return 1;
+            if(t>2){
+                return aCell(t-1)
+            }
+        }
+        function cCell(t) {
+            if(t===1||t===2||t===3) return 0;
+            if(t>3){
+                return  bCell(t-1)
+            }
+        }
+        return aCell(t)+bCell(t)+cCell(t)
+    }
+    console.log(getAll(5))
+
+
+    function mz(n) {
+        let res=[];
+        for(let i=0;i<=n;i++){
+            res.push(Math.pow(2,i))
+        }
+       let r= res.reduce(function (x, y) {
+            return x+y
+        })
+        return r
+
+    }
+    console.log(mz(2))
+
+
+</script>
+</body>
+</html>
+<script>
+    let data = {
+        name: 'jack',
+        child: [
+            {name: 'jack1'},
+            {
+                name: 'jack2',
+                child: [
+                    {
+                        name: 'jack2-1',
+                        child: {name: 'jack2-1-1'}
+                    },
+                    {
+                        name: 'jack2-2'
+                    }
+                ]
+            },
+            {
+                name: 'jack3',
+                child: {name: 'jack3-1'}
+            }
+        ]
+    }
+    console.log(data);
+    console.info('------------')
+    /* function treeBound(data) {
+         let res=[];
+         return function (data) {
+             res.push(data.name)
+         }
+
+     }
+     function findMultiChildPerson(data) {
+         let nameList = [];
+
+         function tmp(data) {
+             if (data.hasOwnProperty('child')) {
+                 if (Array.isArray(data.child)) {
+                     nameList.push(data.name);
+                     data.child.forEach(child => tmp(child));
+                 } else {
+                     tmp(data.child);
+                 }
+             }
+         }
+         tmp(data);
+         return nameList;
+     }
+
+     console.log(treeBound(data))*/
+
+    // 计算阶乘
+    //  5*4*3*2*1
+    function jc(n) {
+        if (n === 2) return 2
+        if (n === 1) return 1
+        if (n > 2) {
+            return n * jc(n - 1)
+        }
+    }
+
+    console.log(jc(6))
+
+
+    function f1(n) {
+        let result = 1;
+        for (let i = 1; i <= n; i++) {
+            result *= i;
+        }
+        return result
+    }
+
+    console.log(f1(4))
+
+    // 计算1到n的和值
+    function qh(n) {
+        if (n === 1) return 1
+        if (n > 1) {
+            return n + qh(n - 1)
+        }
+    }
+
+    console.log(qh(4))
+
+    // 斐波那契数列 1 1 2 3 5 8...
+    function fbnq(n) {
+        if (n === 1) return 1
+        if (n === 2) return 1
+        if (n >= 3) {
+            return fbnq(n - 1) + fbnq(n - 2)
+        }
+    }
+
+    console.log(fbnq(6));
+
+    function fbnq1(n) {
+        let arr = [1, 1];
+        for (let i = 2; i <= n; i++) {
+            arr[i] = arr[i - 1] + arr[i - 2]
+        }
+        return arr
+    }
+
+    console.log(fbnq(6));
+</script>

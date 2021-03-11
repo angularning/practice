@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>解析参数</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    window.onload = function () {
+        console.log(getParam('t'));
+        function getParam(d) {
+            let url = location.href;
+            let index = url.indexOf('?');
+            let newStr = url.substring(index + 1, url.length);
+            let arr = newStr.split('&');
+            let res;
+            arr.forEach(item => {
+                if (item.indexOf(d) > -1) {
+                    res = item.substring(item.indexOf('=') + 1, item.length);
+                }
+            })
+            return res
+
+        }
+
+    }
+</script>

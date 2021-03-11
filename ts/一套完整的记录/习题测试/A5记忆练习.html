@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+/*
+
+    // 快速排序
+    let arr1=[3,4,1,2,5];
+    function kx(arr){
+        if(arr.length<1) return arr;   //使用递归切记，有出口
+        let left=[];
+        let right=[];
+        let p=Math.floor(arr.length/2);
+        let pIndex=arr.splice(p,1)[0];   //找到中间元素点，与之相互比较
+        for(let i=0;i<arr.length;i++){
+            if(arr[i]<pIndex){
+                left.push(arr[i]);
+            }else{
+                right.push(arr[i])
+            }
+        }
+
+        return kx(left).concat(pIndex,kx(right))
+    }
+    // console.log(kx(arr1))
+
+
+    // 冒泡排序
+    function mp(arr) {
+        for(let i=0;i<arr.length;i++){
+            for(let j=0;j<arr.length-1;j++){   //两次循环
+                if(arr[j]>arr[j+1]){
+                    [arr[j],arr[j+1]]=[arr[j+1],arr[j]];  // 交换位置
+                }
+            }
+        }
+        return arr
+    }
+    // console.log(mp(arr1))
+
+    //选择排序
+    function xz(arr){
+        for(let i=0;i<arr.length;i++){
+            let min=i;  //设定当前的i是最小的
+            for(let j=i;j<arr.length;j++){  //在次从当前i循环，找到比最小的i还小的
+                if(arr[j]<arr[min]){      //找到了更小的
+                    min=j;    //把最小的下标给min
+                }
+            }
+            if(min!==i){   //如果最小的不是i，则交换最小的位置
+                [arr[i],arr[min]]=[arr[min],arr[i]]
+            }
+
+        }
+        return arr
+    }
+    // console.log(xz(arr1))
+
+    // 插入排序
+
+    function cr(arr) {
+        for(let i=1;i<arr.length;i++){
+            let temp=arr[i];
+            let j=i-1;   //从第二个元素开始
+            while (arr[j]>temp&&j>=0){ //当左边的元素大于右边的元素，且下标大于等于0，一直重复
+                arr[j+1]=arr[j]
+                j--
+            }
+            arr[j+1]=temp
+
+        }
+        return arr
+    }
+    // console.log(cr(arr1))
+
+    // 归并排序 先分在和
+
+    function f1(arr) {  //拆分数组，分成只有一个元素,出口是数组的长度小于2了，无法在分成左右两个了
+        if(arr.length<2) return arr;
+        let middle=Math.floor(arr.length/2);  //找到一个中间点
+        let left=arr.slice(0,middle);  //分成左边的数组
+        let right=arr.slice(middle,arr.length); //分成右边的数组
+        return f2(f1(left),f1(right))   //递归调用拆分
+    }
+    function f2(left, right) {
+        let res=[];
+        while (left.length>0&&right.length>0){
+            if(left[0]<=right[0]){
+                res.push(left.shift())
+            }else {
+                res.push(right.shift())
+            }
+        }
+        while (left.length){
+            res.push(left.shift())
+        }
+        while (right.length){
+            res.push(right.shift())
+        }
+        return res
+    }
+*/
+
+
+    // 原型和实例，构造函数的关系。
+
+  /*  function Person(name) {
+        this.name=name
+    }
+    Person.prototype.getName=function(){
+        return this.name
+    }
+    let child=new Person('1');
+    // let child1=new Person('2');
+*/
+    // console.log(child.__proto__===Person.prototype)
+    // console.log(Person.prototype.constructor===Person)
+    // console.log(Function.prototype===Object.__proto__);
+    // console.log(Object.prototype.__proto__===null);
+    // console.log(Object.prototype.constructor===Object)
+
+    // 继承的几种方式，最难理解记忆的就是最后一个，寄生组合式继承。但是也是很多框架里常用的
+
+
+
+
+    // JavaScript的几种数据类型，Number String Undefined Null Boolean Symbole BigInt Object
+
+    // 那么如何判断类型呢有对于基本数据类型来说，可以直接 typeof
+
+    // let num=1;
+    // console.log(typeof num)
+    // 对于Array来说可以用Array.isArray
+    // let arr=[1123];
+    // console.log(Array.isArray(arr))
+    // 更加准确地判断可以使用
+    // Object.prototype.toString.call();
+    // console.log(Object.prototype.toString.call(arr))
+
+
+
+    /*function xz1(arr) {
+        for(let i=0;i<arr.length;i++){
+            let min=i;
+            for(let j=i;j<arr.length;j++){
+                if(arr[j]<arr[min]){
+                    min=j;
+                }
+            }
+            if(i!==min){
+                [arr[i],arr[min]]=[arr[min],arr[i]]
+            }
+        }
+        return arr
+    }*/
+    /*function mp1(arr) {
+        for(let i=0;i<arr.length;i++){
+            for(let j=0;j<arr.length;j++){
+                if(arr[j]>arr[j+1]){
+                    [arr[j],arr[j+1]]=[arr[j+1],arr[j]];
+                }
+            }
+        }
+        return arr
+    }*/
+    /*function ks1(arr) {
+        let left=[];
+        let right=[];
+        let p=Math.floor(arr.length/2);
+        let pIndex=arr.slice(0,p)[0];
+        for(let i=0;i<arr.length;i++){
+            if(arr[i]<pIndex){
+                left.push(arr[i])
+            }else{
+                right.push(arr[i])
+            }
+        }
+        return ks1(left).concat(pIndex,ks1(right))
+    }*/
+    /*let arr2=[2,3,1,4,6]
+    function gb1(arr) {
+        if(arr.length<2) return arr
+        let m=Math.floor(arr.length/2);
+        let left=arr.slice(0,m);
+        let right=arr.slice(m);
+        return gb2(gb1(left),gb1(right))
+    }
+    function gb2(left, right) {
+        let res=[];
+        while (left.length>0&&right.length>0){
+            if(left[0]<right[0]){
+                res.push(left.shift())
+            }else{
+                res.push(right.shift())
+            }
+        }
+        while(left.length){
+            res.push(left.shift());
+        }
+        while (right.length){
+            res.push(right.shift())
+        }
+        return res
+    }
+    console.log(gb1(arr2))
+*/
+    /*function cr1(arr) {
+        for(let i=1;i<arr.length;i++){
+            let j=i-1,temp=arr[i];
+            while (arr[j]<temp&&j>=0){
+                arr[j+1]=arr[j];
+                j--;
+            }
+            arr[j+1]=temp
+        }
+        return arr
+    }*/
+
+    // let arr=[1,2,3,4,5];
+    // 对Array进行操作，一下都有循环的概念
+    // for
+    // for in
+    // for of
+    // forEach
+    // map
+    // filter
+    // some
+    // reduce
+    // every
+    // indexOf
+    // lastIndexOf
+    // sort
+    // reverse
+
+    // let arr1=arr.map(item=>{
+    //     if(item>2){
+    //         return item
+    //     }
+    // })
+    // console.log(arr)
+    // console.log(arr1)
+    //
+
+    /*arr.forEach((value, index, array)=>{
+        if(value<=1){
+            arr.splice(index,1)
+        }
+    })
+    console.log(arr)*/
+
+    // 实现简单的数组去重至少用5种方法
+
+    /*let arr=[1,2,3,1,4,undefined,undefined,{a:1},{a:12},''];
+    function qc1(arr) {
+        return [...new Set(arr)];
+    }
+    function qc2(arr){
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            for(let j=i+1;j<arr.length-1;j++){
+                if(arr[i]===arr[j]){
+                    j=++i
+                }
+            }
+            res.push(arr[i])
+        }
+        return res
+    }
+    function qc3(arr){
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            if(res.indexOf(arr[i])<0){
+                res.push(arr[i])
+            }
+        }
+        return res
+    }
+
+    function qc4(arr){
+        let obj={};
+        for(let i=0;i<arr.length;i++){
+            obj[arr[i]]=arr[i]
+        }
+        return Object.values(obj)
+    }
+
+    function qc5(arr){
+        let res=[];
+        arr.filter(value=>{
+             if(res.indexOf(value)<0){
+                 res.push(value)
+             }
+        })
+        return res
+    }
+
+    console.log(qc5(arr))*/
+    //
+    // 几种缓存的区别，强缓存和协商缓存。
+    // // Exprise Catch-control
+    // Last-Modify if-Modify-since
+
+
+    // https和http的区别
+    // 客户端使用https的url访问web服务器,要求与服务器建立ssl连接
+    // web服务器收到客户端请求后, 会将网站的证书(包含公钥)传送一份给客户端
+    // 客户端收到网站证书后会检查证书的颁发机构以及过期时间, 如果没有问题就随机产生一个秘钥
+    // 客户端利用公钥将会话秘钥加密, 并传送给服务端, 服务端利用自己的私钥解密出会话秘钥
+    // 之后服务器与客户端使用秘钥加密传输
+
+    /*// new的实现  绑定prototype,绑定this，以及传参，判断类型
+    function _new(obj) {
+        let res={};
+        if(obj!==null){
+            obj.prototype=res.__proto__;
+        }
+        let arg=[...arguments].splice(1);
+        let result=obj.apply(res,arg);
+        if((typeof result==='object'||typeof result==='function')&&result !==null){
+            return result
+        }
+        return res
+    }*/
+
+/*
+    // 函数的柯里化的通用实现
+
+    function curry(fn,arg) {
+        arg=arg||[];
+        if(typeof fn !=='function') return false
+        let len=fn.length;
+        return function () {
+            let arg1=[...arguments];
+            let newArg=arg.concat(arg1);
+            if(newArg.length>len){
+                return fn.apply(this,newArg);
+            }else{
+                return curry.call(this,fn,newArg);
+            }
+        }
+    }*/
+    /*
+    let arr=[1,'1',true,{a:1},null,'',undefined];
+    // instanceof的实现
+    function _instanceof(left, right) {
+        let left__pro=left.__proto__;
+        let rightPro=right.prototype;
+        if(left===null) return false;
+        while (true){
+            if(left__pro===rightPro){
+                return true
+            }
+            left__pro=leftPro.__proto__
+        }
+    }
+    console.log(_instanceof(arr,Array))
+    */
+
+    /*// 深拷贝的实现：
+    function deepClone(data) {
+        let res=Array.isArray(data)?[]:{};
+        for(let i in data){
+            if(data.hasOwnProperty(i)){
+                if((typeof data[i]==='object'||typeof data[i]==='function')&&data[i]!==null){
+                    res[i]=deepClone(data[i])
+                }else{
+                    res[i]=data[i]
+                }
+            }
+        }
+        return res
+    }*/
+
+
+    // promise的简单实现，promise.race()  promise.all()
+
+    /*function _myPromise(constructor) {
+        let that=this;
+        that.status='pending';
+        that.resolved='';
+        that.rejected='';
+        function resolve(value) {
+            if(that.status==='pending'){
+                that.status='resolved';
+                this.resolved=value;
+            }
+        }
+        function reject(value) {
+            if(that.status==='pending'){
+                that.status='rejected';
+                that.rejected=value
+            }
+        }
+        try {
+            constructor(resolve,reject)
+        }catch (e) {
+            reject(e)
+        }
+    }
+    _myPromise.prototype.then=function (onResolved,onRejected) {
+        if(this.status==='resolved'){
+            onResolved(this.status)
+        }else if(this.status==='rejected'){
+            onRejected(this.status)
+        }
+    }*/
+   /* let obj={a:1,b:[1,2,3]};
+    let obj1=Object.assign(obj)
+
+    function clone(obj){
+        let res=Array.isArray(obj)?[]:{};
+        if(obj==null) return false
+        for(let i in obj){
+            res[i]=obj[i]
+        }
+        return res
+    }
+
+    console.log(clone(obj));*/
+
+   // 深度递归遍历节点
+
+    function f1(node, nodes = []) {
+        if(node!==null){
+            nodes.push(node);
+            let children=node.children;
+            if(children!==null){
+                for(let i=0;i<children.length;i++){
+                    f1(children[i],nodes)
+                }
+            }
+        }
+        return nodes
+    }
+
+
+    // 广度优先遍历
+
+    function f2(node) {
+        let temp=[],result=[];
+        if(node!==null){
+            temp.push(node);
+            while (temp.length){
+                let item=temp.shift();
+                let children=item.children;
+                result.push(item)
+                if(children){
+                    for(let i=0;i<item.length;i++){
+                        temp.push(children[i])
+                    }
+                }
+
+            }
+        }
+        return result
+    }
+
+    let arr1=[1,2,1,3,1,2,3,4,,5,5,6,6,7,111]
+    function qc1(arr) {
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            for(let j=i+1;j<arr.length-1;j++){
+                if(arr[i]===arr[j]){
+                    j=++i
+                }
+            }
+           res.push(arr[i])
+        }
+        return res
+    }
+
+    // console.log(qc1(arr1))
+
+    function qc2(arr) {
+        let res=[];
+        for(let i=0;i<arr.length;i++){
+            if(res.indexOf(arr[i])<0){
+                res.push(arr[i])
+            }
+        }
+        return res
+    }
+
+    function qc3(arr) {
+        let obj={};
+        for(let i=0;i<arr.length;i++){
+            obj[arr[i]]=arr[i]
+        }
+       return  Object.keys(obj)
+
+    }
+    // console.log(qc3(arr1))
+
+    function fd(fn,time) {
+        let timeout='';
+        return function () {
+            if(timeout) clearTimeout(timeout);
+            timeout=setTimeout(()=>{
+                fn.apply(this,[...arguments])
+            },time)
+        }
+    }
+    function jl(fn, time) {
+        let st=new Date();
+        return function () {
+            let et=new Date();
+            if(et-st>time){
+                fn.apply(this,[...arguments])
+                st=new Date();
+            }
+        }
+    }
+
+    function _call(content) {
+        let fn=Symbol();
+        content[fn]=this;
+        let arg=[...arguments].splice(1);
+        let result=content[fn](...arg);
+        delete fn
+        return result;
+    }
+
+    function _bind(content) {
+        let arg=[...arguments].splice(1);
+        let that=this;
+        let bindFn=function () {
+            return that.apply(that instanceof bindFn?that:content,arg.concat([...arguments]));
+        };
+        bindFn.prototype=this.prototype
+        return bindFn
+    }
+    // 1、查找缓存中是否有对应的请求资源，如果有直接加载。
+    // 2、通过DNS解析出来对应的ip地址。
+    // 3、发起http请求，简历TCP链接，产生TCP的三次握手。
+    // 4、根据返回的资源渲染页面，关闭TCP链接。
+
+    function jc(n) {
+        if(n<=1) return 1;
+        return n*jc(n-1);
+    }
+    console.log(jc(4))
+
+    function fbnq(n) {
+        if(n===1) return 1;
+        if(n===2) return 1;
+        return fbnq(n-1)+fbnq(n-2)
+    }
+    console.log((fbnq(5)))
+
+    // 1,1,2,3,5,8
+    // 几种基本数据类型，Number,String,Object,Boolean,undefined,null,Symbol,BigInt
+    // 判断数据类型
+    // instanceof, Object.prototype.toString.call(),typeof
+
+    function _instanceof(left, right) {
+        let left__pro=left.__proto__;
+        let rightPro=right.prototype;
+        if(left===null||right===null) return false
+        while (true){
+            if(left__pro===rightPro){
+                return true
+            }
+            left__pro=left__pro.__proto__
+        }
+    }
+
+    // 闭包的理解
+    // 可以这么理解闭包，在一个函数中可以访问另外一个函数中的变量。最常见的是ajax的回调函数
+
+
+    function curry(fn) {
+        let len=fn.length;
+        let arg=[...arguments].splice(1);
+        return function () {
+            let arg1=arg.concat(arg);
+            let newLen=arg1.length;
+            if(newLen<len){
+                return curry.call(this,fn,arg1)
+            }else{
+                fn.apply(this,arg1)
+            }
+        }
+    }
+
+    // toString(),valueOf()
+
+    function _new(obj) {
+        let res={};
+        if(obj!==null){
+            obj.prototype===res.__proto__
+        }
+        let arg=[...arguments].splice(1);
+        let result=obj.apply(this,arg);
+        if((typeof result==='object'||typeof result==='function')&&result!==null){
+            return result
+        }
+        return res
+    }
+
+
+
+    // Map,Set,let,const,=>
+    // Set是{值,值}的数据结构，特点是不重复，
+    // Map是一种类似对象的{键-值}的数据结构，特点是键可以是一个对象。
+
+    // 继承的几种方式
+    function parentAndChild(parent, child) {
+        let pro=Object.create(parent.prototype);
+        pro.constructor=child;
+        child.prototype=pro
+    }
+    function Parent() {
+        this.name='xxx'
+    }
+    function Child() {
+        Parent.apply(this,[...arguments])
+    }
+    parentAndChild(Parent,Child);
+
+
+
+//
+// function Foo() {
+//     var i = 0;
+//     return function () {
+//         console.log(i++);
+//     }
+//
+// }
+//
+// var f11 = Foo(),
+//     f2 = Foo();
+// f11();
+// f11();
+// f2();
+
+    function _news(fn) {
+        let res={};
+        if(fn!==null){
+            fn.prototype=res.__proto__;
+        }
+
+    }
+
+var majorityElement = function(nums) {
+    let res='';
+    for(let i=0;i<nums.length;i++){
+        for(let j=i+1;j<nums.length;j++){
+            if(nums[i]===nums[j]){
+                res=nums[j]
+            }
+        }
+    }
+    return res
+};
+console.log(majorityElement([1,2,1,1,2,2,2]));
+
+
+
+
+
+ // a g f h  d c e i k j l
+
+console.log('a');
+
+setTimeout(function() {   // h 1
+    console.log('b');
+    process.nextTick(function() { //w 2
+        console.log('c');
+    })
+    new Promise(function(resolve) {
+        console.log('d');
+        resolve();
+    }).then(function() {
+        console.log('e')  // w 3
+    })
+})
+process.nextTick(function() {
+    console.log('f');
+})
+new Promise(function(resolve) {
+    console.log('g');
+    resolve();
+}).then(function() {
+    console.log('h')
+})
+
+setTimeout(function() {   //h 2
+    console.log('i');
+    process.nextTick(function() { // w4
+        console.log('j');
+    })
+    new Promise(function(resolve) {
+        console.log('k');
+        resolve();
+    }).then(function() {
+        console.log('l')  // w5
+    })
+})
+
+
+    // a
+</script>

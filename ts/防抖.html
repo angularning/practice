@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>防抖</title>
+</head>
+<body>
+<h3>何为防抖何为节流</h3>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+</body>
+</html>
+<script>
+window.onload=function () {
+
+}
+var i=1;
+function printI(){
+    console.log(i++)
+}
+
+document.addEventListener('scroll',debounce(printI,2000))
+    function debounce(fn, waitTime) {
+        let timeout=null;
+        return function () {
+            let _this=this,arg=arguments;
+            clearTimeout(timeout);
+            timeout=setTimeout(function () {
+                fn.apply(_this,arg);
+            },waitTime)
+        }
+    }
+</script>

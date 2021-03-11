@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>循环forEach,map,filter,for in,for of,for</title>
+</head>
+<body>
+<h1>有这么一串数据</h1>
+<section>
+    <pre>
+        {
+            "code":0,
+            "body":[
+                {
+                    "id":0,
+                    "name":"小A",
+                    "sex":"男",
+                    "grade":80
+                },
+                {
+                    "id":1,
+                    "name":"小B",
+                    "sex":"女",
+                    "grade":60
+                },
+                {
+                    "id":2,
+                    "name":"小C",
+                    "sex":"男",
+                    "grade":89
+                },
+                {
+                    "id":3,
+                    "name":"小D",
+                    "sex":"女",
+                    "grade":95
+                }
+            ]
+        }
+    </pre>
+</section>
+<ul>
+    <li>姓名：，性别：，分数：</li>
+</ul>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        let data = [
+            {
+                "id": 0,
+                "name": "小A",
+                "sex": "男",
+                "grade": 80
+            },
+            {
+                "id": 1,
+                "name": "小B",
+                "sex": "女",
+                "grade": 60
+            },
+            {
+                "id": 2,
+                "name": "小C",
+                "sex": "男",
+                "grade": 89
+            },
+            {
+                "id": 3,
+                "name": "小D",
+                "sex": "女",
+                "grade": 95
+            }];
+        /* console.log(data.length);
+         let d1 = [];
+         data.forEach((item, index) => {
+             if (index > 2) d1.push(item)
+         })
+         console.log(d1);
+
+         let d2 = data.map(item => {
+             return item
+         })
+         console.log(d2)*/
+
+        let d3 = data.filter((item, index) => {
+            return index > 2
+        })
+        console.log(d3)
+
+        // for of 用来遍历类数组结构，但是不能遍历对象，是es6引入的新的方法
+        // 可以遍历数组，Map ,Set String
+        /*for(item of data){
+            console.log(item)
+        }
+        */
+        /*let str1='小红参加了   中日友好峰会';
+        let d4=[];
+        for(v of str1){
+            if(v==='日'){
+                v=1;
+            }
+            d4.push(v)
+        }
+        */
+
+        //for in 可以遍历对象
+        let obj1={a:1,b:function () {},c:[1,2,3],d:null,e:undefined,f:Symbol(),g:true}
+        for(let i in obj1){
+            console.log(obj1[i])
+        }
+    }
+</script>

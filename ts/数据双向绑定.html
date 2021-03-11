@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>监听数据的属性发生变化</title>
+</head>
+<body>
+<div>
+    <input id="input" onkeyup="updateValue(event)" type="text" style="width: 100%;height: 40px;line-height: 40px;border: 1px #ccc solid;outline: none;">
+    <p>输入的内容：<span id="getInputValue"></span></p>
+</div>
+</body>
+</html>
+<script>
+    let input=document.getElementById('input'),getInputValue=document.getElementById('getInputValue');
+    let oldValue={
+        name:getInputValue.innerHTML
+    }
+    function updateValue(e){
+        oldValue.name=e.target.value
+    }
+    Object.defineProperty(oldValue,'name',{
+        get:function (e) {
+            return e
+        },
+        set:function (value) {
+            input.value=value;
+            getInputValue.innerHTML=value;
+        }
+    })
+
+
+    // 第二种：使用 proxy
+
+</script>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>promise all的使用，最大并发</title>
+</head>
+<body>
+
+</body>
+</html>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script>
+    $.ajax({
+        url:'https://id.xiuliw.com/ajax/analyze.php',
+        type:'post',
+        data:{
+            link: 'https://v.douyin.com/nxSo4V/'
+        },
+        success:function (e) {
+            console.log(e)
+        }
+    })
+</script>
+<script>
+    let data={
+        method: 'POST',
+        dataType:'JSONP',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data:{"num":1},
+        "page":11,
+        "size":10
+    };
+    myRequest('https://id.xiuliw.com/ajax/analyze.php',{link: 'https://v.douyin.com/nxSo4V/'},res=>{
+        console.log(res)
+    },err=>{
+        console.log(err)
+    },
+        0)
+
+    /*
+    myRequest('http://jinrongt.jihustore.com/analyse/api/website/newsInformation/page',data,res=>{
+        console.log(res)
+    },err=>{
+        console.log(err)
+    },
+        5)*/
+    function myRequest(url, body, successCallback, errCallback, maxSize) {
+        return fetch(url, body).then(res => {
+            successCallback(res)
+        }).catch(err => {
+            if (maxSize <=0) {
+                return errCallback(err)
+            } else {
+                return myRequest(url, body, successCallback, errCallback, --maxSize)
+            }
+        })
+    }
+
+    // 上述例子只是封装一个请求，如果错误的话会继续请求。
+
+    let p1=new Promise((resolve,reject)=>{
+        resolve('111');
+    })
+    let p2=new Promise((resolve, reject) => {
+        resolve('error')
+    })
+    Promise.all([p1,p2]).then(result=>{
+        console.log(result)
+    })
+
+
+</script>

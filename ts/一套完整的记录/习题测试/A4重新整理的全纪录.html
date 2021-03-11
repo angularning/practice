@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewPort" content="width=device-width,initial-scale=1.0">
+    <title>写的多了，理解多了，就会了</title>
+    <style>
+        /*居中的几种方法*/
+        /*.parent{
+            background: #f9f9f9;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .children{
+            background: #0C9DDA;
+            color: #fff;
+        }*/
+        /* .parent{
+             background: #f9f9f9;
+             height: 100px;
+             position: relative;
+         }
+         .children{
+             background: #0C9DDA;
+             color: #fff;
+             position: absolute;
+             left:50%;
+             top: 50%;
+             transform: translate(-50%,-50%);
+         }*/
+        /* .parent{
+             background: #f9f9f9;
+             height: 100px;
+             display: table;
+         }
+         .children{
+             background: #0C9DDA;
+             color: #fff;
+             display: table-cell;
+             vertical-align: middle;
+         }*/
+        /*.parent{
+            background: #f9f9f9;
+            height: 100px;
+            position: relative;
+        }
+        .children{
+            width: 50px;
+            height: 50px;
+            background: #0C9DDA;
+            color: #fff;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }*/
+        /* .parent{
+             background: #f9f9f9;
+             height: 100px;
+             display: flex/grid;
+         }
+         .children{
+             background: #0C9DDA;
+             color: #fff;
+             margin: auto;
+         }*/
+
+
+        /* .classBorder{
+             box-shadow: inset 0 -1px 1px -1px;
+         }*/
+        /*.classBorder{
+            border: none;
+            position: relative;
+        }
+        .classBorder:after{
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 1px;
+            background: #333;
+            transform: scaleY(0.5);
+            transform-origin:0 0;}*/
+
+    </style>
+</head>
+<body>
+<div>
+    <h3 style="opacity:0" onclick="alert(1)">从1到100，你会多少？</h3>
+    <div class="classBorder">一个一像素的边框</div>
+    <!--    <input type="text" id="input" placeholder="快速输入">-->
+    <!--<div class="root">
+        <div class="children1">
+            <div class="children1-1">
+                <div class="children1-1-1">
+                    1-1-1
+                </div>
+                <div class="children1-1-2">
+                    1-1-2
+                </div>
+            </div>
+            <div class="children1-2">
+                1-2
+            </div>
+        </div>
+        <div class="children2">
+            <div class="children2-1">
+                2-1
+            </div>
+            <div class="children2-2">
+                2-2
+            </div>
+        </div>
+    </div>-->
+    <div class="parent">
+        <div class="children">
+            我要垂直居中
+        </div>
+    </div>
+
+
+    <div>
+        <h3>使用proxy实现数据的双向绑定</h3>
+        <div>
+            <input type="text" style="border: 1px #ccc solid;" id="input" placeholder="输入...">
+            <p>显示输入的内容：<span id="showInputContent"></span></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+
+    // 'use strict'
+    // 1、在vue中列表为什么要加key？
+    // 因为在vue中使用了虚拟DOM的技术，在虚拟DOM中使用了diff算法进行差异对比，如果有key的话，可以更快的完成新旧节点的对比，计算结果。
+
+
+    // 2、['1', '2', '3'].map(parseInt)
+    // 首先知道map的几个返回值，要知道parseInt的作用
+    // 举例：
+    // map的callback有三个参数，value，index，array，parseInt的参数有两个，一个是值，一个是基数。
+    // 那么上述的表达式可以理解为:
+    // parseInt('1',0);   //1
+    // parseInt('2',1);  //NaN
+    // parseInt('3',2);  //NaN
+
+
+    // 3、什么是防抖，什么是节流
+    // 防抖是某一个事件在一定时间内执行，如果再次触发，则重新计算时间。节流是控制事件执行的频率，在一定时间内只会执行一次。
+    /* function fd(fn, wait) {
+         let timeout;
+         return function () {
+             if(timeout) clearTimeout(timeout);
+             timeout=setTimeout(function () {
+                 fn.apply(this,arguments)
+             },wait)
+         }
+     }
+
+     function jl(fn, wait) {
+         let st=new Date();
+         return function () {
+             let et=new Date();
+             if(et-st>wait){
+                 fn.apply(this,arguments);
+                 st=new Date();
+             }
+         }
+     }
+     let i=1;
+     function sc() {
+         console.log(i++)
+     }
+     document.getElementById('input').addEventListener('keypress',jl(sc,1000))*/
+
+
+    // 4、Set,WeakSet,Map,WeakMap的作用，区别，常见的用法
+    //  以上几个都是ES6新增的几种数据结构，Set,和WeakSet是一种由值组成的类数组结构，特点是值都是不相同的，WeakSet的值都是对象，且是弱引用，随时会被回收。操作的方法有，add,has,delete,clear,keys(),values(),entries(),forEach()；
+    //  Map,是一种键值对的形式，键可以是对象，WeakMap的键只能是对象，且也是弱引用。常用的方法，set,get,delete,has,clear,values(),entries(),forEach()
+
+
+    // 5、数组去重的几种常用的方法
+    // 再次写起来有一种陌生又熟悉的感觉
+
+    /* let arr=[1,2,3,1,2];
+     function qc1(arr) {
+         return [...new Set(arr)]
+     }
+
+     function qc2(arr) {
+         let res=[];
+         arr.map(v=>{
+             if(res.indexOf(v)<0){
+                 res.push(v)
+             }
+         })
+         return res
+     }
+
+     function qc3(arr){
+         let res=[];
+         for(let i=0;i<arr.length;i++){
+             for(let j=i+1;j<arr.length;j++){
+                 if(arr[i]===arr[j]){
+                      ++i
+                 }
+             }
+             res.push(arr[i])
+         }
+         return res
+     }
+
+     function qc4(arr){
+         let obj={},res=[];
+         for(let i in arr){
+             if(!obj[arr[i]]){
+                 res.push(arr[i]);
+             }
+             obj[arr[i]]=i
+         }
+         return res
+     }
+     console.log(qc4(arr))*/
+
+
+    // 6、深拷贝，浅拷贝的作用，以及实现。
+
+    // 深拷贝指的是拷贝后的值，不会受到旧值的影响，浅拷贝则会受到影响。
+    // 自带的有些api具有拷贝功能。
+    // 浅拷贝如：Object.assign();
+    // 深拷贝如：JSON.parse(JSON.stringify())
+    /*function deepClone(obj) {
+        let res=Array.isArray(obj)?[]:{};
+        if(typeof obj !=='object') return;
+        for(let i in obj){
+            if(obj.hasOwnProperty(i)){
+                if(obj[i]&&typeof obj[i]==='object'){
+                    res[i]=this.deepClone(obj[i])
+                }else{
+                    res[i]=obj[i]
+                }
+            }
+        }
+        return res
+    }
+    let obj1={
+        a:1,
+        b:function () {
+
+        },
+        c:[1,2,3],
+        d:undefined,
+        f:null
+    };
+    let obj2=deepClone(obj1);
+    obj1.a=3;
+    console.log(obj2)
+
+    function clone(obj){
+        let res=Array.isArray(obj)?[]:{};
+        for(let i in obj){
+            res[i]=obj[i]
+        }
+        return res
+    }*/
+
+    // 7、深度优先遍历和广度优先遍历的实现，以及常用的场景
+
+    // 深度优先遍历，遍历一个节点的子节点，一直找不到为止，在去遍历相邻节点
+    /*  function deepTravelSome(node, nodelist = []) {
+          let c=node.children;
+          if(node!==null){
+              nodelist.push(node);
+              for(let i=0;i<c.length;i++){
+                  deepTravelSome(c[i],nodelist)
+              }
+          }
+          return nodelist
+      }
+
+      let root=document.querySelector('.root');
+      console.log(root);
+
+
+      function gdTravelSOme(node) {                   //不理解，记不住。
+          let result=[];
+          let temp=[];
+          if(node){
+              temp.push(node);
+              while (temp.length){
+                  let item=temp.shift();
+                  let child=item.children;
+                  result.push(item);
+                  for(let i=0;i<child.length;i++){
+                      temp.push(child[i])
+                  }
+              }
+          }
+          return result
+      }
+      console.log(gdTravelSOme(root));*/
+
+    // 8、继承的几种实现方法，以及ES6的继承和ES5的继承的区别。
+
+    // 第一种：原型链继承。
+    // 第二种：构造函数继承。
+    // 第三种：组合继承。
+    // 第四种：原型式继承。
+    // 第五种：寄生式继承。
+    // 第六种：寄生组合式继承。
+    // 第七种：ES6的Class继承
+
+    // one: 无法传递参数 父类的属性和方法都被不同的实例公用
+    /* function a() {
+         this.name='xxx'
+     }
+     a.prototype.getName=function () {
+         return this.name
+     }
+     function b() {};
+     b.prototype=new a();
+     let c=new b();
+     console.log(c.getName())
+     */
+    // two: 可以传递参数，不同实例之间不会相互影响
+    /* function a() {
+         this.name='xxx';
+     }
+     function b() {
+         a.apply(this,arguments)
+     }
+     let c=new b();*/
+
+    // three: 集合了上述两个的优点，缺点是父类的构造器调用了两次
+    /*function a() {
+        this.name='xxx';
+    }
+    a.prototype.getName=function () {
+        return this.name
+    }
+    function b() {
+        a.apply(this,arguments);
+    }
+    b.prototype=new a();
+    let c=new b();
+    console.log(c)*/
+
+    // four:原型式继承 多个实例会相互影响
+
+    /* function createObj1(obj) {
+         let fn=function(){};
+         fn.prototype=obj;
+         return new fn();
+     }
+     let a={
+         name:'xxx',
+         age:18
+     }
+     let b=createObj1(a);
+     console.log(b.name)
+     */
+    // five:寄生式继承
+    /*function createObj2(obj) {
+        let o=Object.create(obj);
+        o.getName=function () {
+            return this.name
+        }
+        return o
+    }
+    let a={
+        name:'xxx',
+        age:20
+    }
+    let b=createObj2(a);
+    console.log(b.getName())*/
+
+    // six:寄生组合式继承  记不住放弃
+
+
+    // seven：Class继承
+    /*
+    class a{
+        constructor(name) {
+            this.name=name
+        }
+        getName(){
+            return this.name
+        }
+    }
+    class b extends a{
+        constructor(name){
+            super(name)
+        }
+    }
+    let c=new b('xxx')
+    console.log(c.getName())
+    */
+
+
+    // 9、js的事件执行机制，Event Loop
+
+    // js是单线程的语言，是从设计的时候就这么规定的。
+    // 进程是CPU分配资源的最小单位。线程是CPU执行的最小单位。
+    // js先执行宏任务，如果遇到微任务，把微任务放入任务队列，执行完成宏任务后，从任务队列取出微任务，放入执行栈，继续执行，依次循环。
+    /* async function async1() {
+         console.log('1');
+         await async2();
+         console.log('2');
+     }
+     async function async2() {
+         console.log('3');
+     }
+     console.log('4');
+     setTimeout(function() {
+         console.log('5');
+     }, 0)
+     async1();
+     new Promise(function(resolve) {
+         console.log('6');
+         resolve();
+     }).then(function() {
+         console.log('7');
+     });
+     console.log('8');
+
+     // 4，1，3，6，8，2，7，5 */
+
+    // 10、手写一个new
+    /*//  如果传入的方法不为空，则绑定原型，收集参数，时候用apply指定this，判断为引用类型，如果是则返回，否则返回其它。
+     function _new(fn) {
+         let res={};
+         if(fn!==null){
+             res.__proto__=fn.prototype
+         }
+         let arg=[...arguments].splice(1);
+         let result=fn.apply(res,arg);
+         if(result==='object'||result==='function'&&result!==null){
+             return result
+         }
+         return res
+     }*/
+
+    //11、 常用的创建对象的有以下几种方式。
+    // let obj={a:1}; //直接使用字面量创建
+    //
+    // let obj1=new Object({a:1})
+    //
+    // let a={a:1}
+    // let obj2=Object.create(a);
+
+    // function f(name) {
+    //     this.name=name
+    // }
+    // let a=new f('xx');
+    // console.log(a.name)
+
+    // function f() {}
+    // f.prototype.name='xxx';
+    // let a=new f();
+    // console.log(a.name)
+
+
+    // 12、promise的理解，用法，以及代码的实现。
+
+    // Promise是异步处理的一种方式，有三种状态，pending,resolve,reject,状态是不可逆的，只能从pending>resolve, pending>reject。
+    /*let promise=new Promise((resolve, reject) => {
+        if(true){
+            resolve()
+        }else{
+            reject();
+        }
+    });
+    promise.then(res=>{
+        console.log(re)
+    }).catch(err=>{
+        console.log(err)
+    })*/
+
+    // 有两种常用的属性方法，all，race
+    // all都成功了才返回，race谁返回的快用谁的结果
+    /*let p1=new Promise(resolve => {
+        resolve('success1')
+    });
+    let p2=new Promise(resolve => {
+        resolve('success2')
+    });
+    let p3=Promise.reject('err');
+    Promise.all([p1,p2]).then(value => {
+        console.log(value)
+    }).catch(err=>{
+        console.log(err);
+    })*/
+
+    /* // 那么如何实现呢？
+     function _promise(constructor){
+         let that=this;
+         let status='pending';
+         let resolved=undefined;
+         let rejected=undefined;
+         function resolve(value) {
+             if(that.status==='pending'){
+                 that.status==='resolve';
+                 that.resolved=value
+             }
+         }
+         function reject(value) {
+             if(that.status==='pending'){
+                 that.status==='reject';
+                 that.rejected=value
+             }
+         }
+         try {
+             constructor(resolve,reject);
+         }catch (err) {
+             reject(err)
+         }
+     }
+     _promise.prototype.then=function (onResolved,onRejected) {
+         let that=this;
+         if(that.status==='resolved'){
+             onResolved(that.resolved)
+         }
+         if(that.status==='rejected'){
+             onRejected(that.rejected)
+         }
+     }*/
+
+    // 13、http2中的多路复用的概念，以及 TCP的三次握手，四次挥手
+    // 概念性的东西要去理解，知道怎么用。
+    // 发送的http请求都是建立在TCP链接上的，我们知道客户端和服务端都有最大请求并发数，如果超过这个数，剩下的请求就会等待前面的完成请求，
+    // http2中为了解决这个问题，有流和帧的概念，通俗的讲就是在一个TCP链接上可以同时进行多个请求，也就相当于多个流，用帧来判别是哪个请求。
+
+
+    // 14、react 中的setState的相关问题。
+    /*
+    class Example extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                val: 0
+            };
+        }
+
+        componentDidMount() {
+            this.setState({val: this.state.val + 1});
+            console.log(this.state.val);    // 第 1 次 log
+
+            this.setState({val: this.state.val + 1});
+            console.log(this.state.val);    // 第 2 次 log
+
+            setTimeout(() => {
+                this.setState({val: this.state.val + 1});
+                console.log(this.state.val);  // 第 3 次 log
+
+                this.setState({val: this.state.val + 1});
+                console.log(this.state.val);  // 第 4 次 log
+            }, 0);
+        }
+
+        render() {
+            return null;
+        }
+    };
+*/
+    // 所有通过React添加的事件处理 this.setState(),并不是直接可以更新state中值的状态，而是会把这些值保存在一个队列中，通过一个状态判断是不是要更新，setTimeout(),setInterval()，可以直接更改。
+
+    // 15、js常用的判断类型的几种方法。
+
+    // typeof , instanceof , Object.prototype.toString.call()
+    // 判断数组的：Array.isArray()
+
+    // 16、实现一个 instanceof
+    /* // 从原型链上判断能不能找到。
+
+     function _instanceof(left,right){
+         if(left!==null&&right!==null){
+             while (true){
+                 let leftPro=left.__proto__;
+                 let right__pro=right.prototype;
+                 if(leftPro===right__pro){
+                     return true
+                 }else{
+                     return false
+                 }
+                 leftPro=leftPro.__proto__;
+             }
+
+         }
+     }
+     let arr1=[1,2,3];
+     console.log(_instanceof(arr1,Array))
+     console.log(arr1 instanceof Array)*/
+
+
+    // 17、介绍一个浏览器的重绘和回流。
+    // 回流一定发生重绘，但重绘不一定发生回流，浏览器的窗口缩放，元素位置的变化，尺寸的变化等都会触发回流。
+    // 改变文本颜色，背景颜色等会触发重绘
+
+    // 优化的时候也可以从这方便考虑。
+
+    // 18、闭包的了解 闭包的概念 可以简单的理解为，一个作用域的变量能被另外一个作用域访问。闭包的作用呢，能保护变量，也能保存变量。但是闭包也会带来一些性能上的问题，可能不会被垃圾回收机制回收。常用的闭包比如：请求成功的回调。
+    // for (var i = 0; i< 10; i++){
+    //     setTimeout(() => {
+    //         console.log(i);
+    //     }, 1000)
+    // }
+    //
+    //
+    // for (let i = 0; i< 10; i++){
+    //     setTimeout(() => {
+    //         console.log(i);
+    //     }, 1000)
+    // }
+
+    // for (var i = 0; i< 10; i++){
+    //     (function (i) {
+    //         setTimeout(() => {
+    //             console.log(i);
+    //         }, 1000)
+    //     })(i)
+    // }
+
+    // for(var i=0;i<10;i++){
+    //     setTimeout((function (i) {
+    //         console.log(i)
+    //     })(i))
+    // }
+
+    // 19、vue列表中的key的作用是什么
+
+    // key提高虚拟DOM的更新速度，在vue中使用的是虚拟DOM来替代真实的DOM更新，只有当确定DOM后才会真正的生成DOM树，这样极大提高了加载速度，更新速度。
+    // 虚拟DOM是如何更新的呢，使用了diff算法，pach算法，其中diff算法就是对比新旧节点的差异，把最新的保存下来，如果有key的话，可以直接对比key对应的节点是否变化，就不需要去遍历查找。
+
+
+    // 20、以下代码会输出什么
+    //  var b = 10;
+    //  (function b(){
+    //      b = 20;
+    //      console.log(b);
+    //  })();
+    //函数声明比变量声明要高，优先级大
+    // 输出 function b(){
+    // b = 20;
+    // console.log(b);
+    // }
+
+    // 21、浏览器缓存
+
+    // 这个问题需要从缓存说起，常见的缓存有以下几个，cdn缓存，浏览器缓存，数据库缓存。我们前端能做的大多数是与服务端交互，与浏览器交互，所以我们只需要搞懂浏览器缓存，和http缓存即可。
+
+    // 浏览器缓存分为：http缓存，本地存储。
+    // http缓存又分为 强缓存，和协商缓存。强缓存包括，Expires,Catch-Control。协商缓存 Last-Modified, if-Modified-since 以及ETag 和 if-none-Math
+    // 本地存储分为：localStorage,sessionStorage,cookie,
+    // https://segmentfault.com/a/1190000017185195
+
+    /*
+
+        -------------------------------------------------插入分割线-------------------------------------------------
+      /!*  function _instanceof(left,right){
+            let left__pro=left.__proto__;
+            let rightPro=right.prototype;
+            while(true){
+                if(left!==null&&right!==null){
+                    if(left__pro===rightPro){
+                        return true
+                    }else{
+                        return false
+                    }
+                    left__pro=left.__proto__
+                }
+
+            }
+        }*!/
+
+    /!*
+        let isFn=function(){};
+
+        let isObj={a:1};
+        let isArray=[1];
+
+        let isStr='1';
+        let isNum=1;
+        let isBoolean=true;
+        let isSymbol=Symbol();
+        let isBigInt=BigInt('1');
+
+        let isNull=null;
+        let isUndefined=undefined;
+
+        // CheckType();
+        function CheckType(value){
+            console.log(value.__proto__)
+        }
+
+        checkPrototype(Function)
+        checkPrototype(Object)
+        checkPrototype(Array)
+        checkPrototype(Number)
+        checkPrototype(String)
+        checkPrototype(Boolean)
+
+        function checkPrototype(value){
+            console.log(value.prototype)
+        }*!/
+
+            -------------------------------------------------插入分割线-------------------------------------------------
+    */
+    // 22、
+    /*let arr1=['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
+    let arr2=['A', 'B', 'C', 'D'];
+    // 2,5,8,11
+    console.log(concatArr(arr1,arr2));
+    /!*function concatArr(arr1, arr2) {
+        let a3=arr2.map(item=>{
+            return item+3
+        });
+        return (arr1.concat(a3).sort()).map((v,i)=>{
+            if(v.indexOf('3')>0){
+                v=v.substring(1,0)
+            }
+            return v
+        })
+    }*!/
+    function concatArr(arr1,arr2) {
+        let temp=[];
+        let len2=arr2.length;
+        let len1=arr1.length;
+        let k=len1/len2;
+        for(let i=0,j=0;i<len1;i+=k,j++){
+            temp.push(arr1.slice(i,i+k).concat(arr2[j]))
+        }
+        return temp.flat(1)
+    }*/
+
+    // 23、
+    /*
+        let arr1=[1,2,[3,4,[5],[6,[7],[8]],9]];
+       /!* const _flat=arr=>{
+            while (arr.some(v=>{return Array.isArray(v)})){
+                arr=[].concat(...arr)
+            }
+            return arr
+        };*!/
+
+       const _flat=arr=>{
+           let res=[];
+           arr.map(value=>{
+               Array.isArray(value)?res.push(..._flat(value)):res.push(value)
+           })
+           return res
+       }
+        console.log(_flat(arr1))
+    */
+
+    // var a={
+    //     i:1,
+    //     valueOf(){  //toString
+    //         return this.i++
+    //     }
+    // }
+
+    // let a=[1,2,3];
+    // a.toString=a.shift;
+    // var a = ?;
+    // if(a == 1 && a == 2 && a == 3){
+    //     console.log(1);
+    // }
+
+    // 24、call，apply，bind的区别用法以及实现。
+
+    // 前两者的区别在于参数不同，call后面跟的参数是多个string，apply时候array，bind返回的是一个函数，需要执行。从性能上来讲，call的性能好，为什么呢，因为从最底层上的实现来说，apply和call基本相同，但是apply多了一步把array转化的过程。
+    // 那么如何实现呢
+    /*  // apply
+      function _apply(content=window,arg){
+          let fn=Symbol();
+          content[fn]=this;
+          if(Array.isArray(arg)){
+              let result=content[fn](arg);
+              delete content[fn];
+              return result
+          }else{
+              throw new Error('12312')
+          }
+      }
+
+      function _call(content=window){
+          let fn=Symbol();
+          content[fn]=this;
+          let arg=[...arguments].splice(1);
+          let result=content[fn](...arg);
+          delete content[fn];
+          return result
+      }
+
+      function _bind(content){
+          let that=this;
+          let arg1=[...arguments].splice(1);
+          let bindFn=function () {
+              let arg2=[...arguments];
+              return that.apply(this instanceof bindFn?this:content,arg1.concat(arg2))
+          };
+          this.prototype=bindFn.prototype;
+          return bindFn
+      }
+  */
+
+    // 25、(5).add(3).minus(2)
+    /*  Number.prototype.add=function (n) {
+          return this+n
+      }
+      Number.prototype.minus=function (n) {
+          return this-n
+      }
+
+      console.log((5).add(3).minus(2))
+  */
+
+
+    // 26、让一个div垂直居中的方法。用css
+
+
+    // 27、冒泡算法的实现
+    // 思路是双层循环，左边和右边的值进行比较，大则交换位置
+    // let arr1=[2,3,1,5,4];
+    /* function mp(arr) {
+         for(let i=0;i<arr.length;i++){
+             for(let j=0;j<arr.length;j++){
+                 if(arr[j]>arr[j+1]){
+                     [arr[j],arr[j+1]]=[arr[j+1],arr[j]]
+                 }
+             }
+         }
+         return arr
+     }
+     console.log(mp(arr1))*/
+
+    // 28、选择
+    // 特点是选择一个最小的值，双层循环，假设i是最小的，用最里层arr[j]和min比较，如果比min小则把j给min，外层循环判断min是不是为i，如果不是，则交换位置用最小的和剩下的去对比，如果大则交换位置
+
+    /*function xz(arr){
+        for(let i=0;i<arr.length;i++){
+            let min=i;
+            for(let j=i;j<arr.length;j++){
+                if(arr[min]>arr[j]){
+                    min=j
+                }
+            }
+            if(min!==i){
+                [arr[min],arr[i]]=[arr[i],arr[min]];
+
+            }
+        }
+        return arr
+    }
+    console.log(xz(arr1))*/
+
+    // 29、插入
+    // 插入排序是从数据的第二个元素开始，依次比较左边的元素大于右边的元素，交换位置
+
+    /* function cr(arr){
+         let temp;
+         for(let i=0;i<arr.length-1;i++){
+             for(let j=i+1;j>0;j--){
+                 if(arr[j]<arr[j-1]){
+                     temp=arr[j];
+                     arr[j]=arr[j-1];
+                     arr[j-1]=temp
+                     // [arr[j],arr[j-1]]=[arr[j-1],arr[j]]
+                 }else{
+                     break
+                 }
+             }
+         }
+         return arr
+     }
+     console.info(cr(arr1))*/
+
+    // 30、快速排序
+    // 找出一个基准点，把数组分成左边和右边，使得左边的元素都小于基准点，右边的都大于基准点，递归比较。
+    /*
+        function qs(arr) {
+            if(arr.length<1) return arr
+            let p=Math.floor(arr.length/2);
+            let left=[],right=[];
+            let pNum=arr.splice(p,1)[0];
+            for(let i=0;i<arr.length;i++){
+                if(arr[i]<pNum){
+                    left.push(arr[i])
+                }else{
+                    right.push(arr[i])
+                }
+            }
+            return qs(left).concat([pNum],qs(right))
+        }
+        console.log(qs(arr1))*/
+    // 31、堆
+
+
+    // 32、对比一下几个隐藏元素的css属性的区别。display:none,opacity:0;vibisity:hidden;
+    // 第一个：不可见，不能点，不占位置。
+    // 第二个：不可见，能点，占位置。
+    // 第三个：不可见，不能点，占位置
+
+
+    // 33、箭头函数和普通函数的区别是什么呢，为什么不能使用new呢
+    // 箭头函数的this指向是创建函数时候的对象。
+    // 箭头函数不能用在Generatr函数中。
+    // 箭头函数没有arguments。
+    // 箭头函数不能使用new，因为this不能指向调用的，无法正确的使用call，apply，也没有prototype属性。
+
+    // 34、数组的交集，并集。
+
+    /*let arr1=[1,2,3,4];let arr2=[1,2,5,6];
+    function jj(arr1, arr2) {
+       let res=arr1.filter(v=>{
+            return arr2.includes(v)
+        })
+        return res
+    }
+    console.log(jj(arr1,arr2))
+*/
+
+    // 35、
+    // 给定 nums = [2, 7, 11, 15], target = 9
+    //
+    // 因为 nums[0] + nums[1] = 2 + 7 = 9
+    // 所以返回 [0, 1]
+    /* let arr1 = [1, 2, 3, 4,5,6,7,8,9,10];
+
+     function f1(arr, target) {
+         let res=[];
+         let len=Math.floor(arr.length/2);
+         for(let i=0;i<len;i++){
+             for(let j=0;j<arr.length;j++){
+                 if(arr[i]+arr[j]===target&&i!==j){
+                     res.push(i);
+                 }
+             }
+         }
+         return res
+     }
+     function sum(arr, target) {
+         const res = []
+         for (let i = 0; i < arr.length; i++){
+             const a = target - arr[i]
+             const index = arr.indexOf(a,i)
+             if (index>=0) {
+                 res.push(i, index)
+             }
+         }
+         return res
+     }
+     console.log(sum(arr1,5))
+     */
+
+    /*实现LazyMan('Tony');
+     // Hi I am Tony
+
+     LazyMan('Tony').sleep(10).eat('lunch');
+     // Hi I am Tony
+     // 等待了10秒...
+     // I am eating lunch
+
+     LazyMan('Tony').eat('lunch').sleep(10).eat('dinner');
+     // Hi I am Tony
+     // I am eating lunch
+     // 等待了10秒...
+     // I am eating diner
+
+     LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(5).sleep(10).eat('junk food');
+     // Hi I am Tony
+     // 等待了5秒...
+     // I am eating lunch
+     // I am eating dinner
+     // 等待了10秒...
+     // I am eating junk food
+
+     作者：木易杨说
+     链接：https://juejin.im/post/5d23e750f265da1b855c7bbe
+         来源：掘金
+     著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。*/
+    /* class SomePro{
+         constructor(name){
+             this.name=name;
+             console.log(`Hi I am ${name}`)
+             this.taskList=[];
+             setTimeout(()=>{
+                 this.next();
+             },0)
+         }
+         eat(name){
+             let that=this;
+             const fn=(function () {
+                 return function () {
+                     console.log(`吃的是${name}`);
+                     that.next();
+                 }
+             })(name);
+             this.taskList.push(fn);
+             return this
+         }
+         sleep(time){
+             let that=this;
+             const fn=(function () {
+                 return function () {
+                     setTimeout(function () {
+                         console.log(`等了${time}s`)
+                          that.next()
+                     },time*1000)
+                 }
+             })(time);
+             this.taskList.push(fn);
+             return this;
+         }
+         sleepFirst(time){
+             let that=this;
+             const fn=(function (time) {
+                 return function () {
+                     setTimeout(function () {
+                         console.log(`等了${time}s`)
+                         that.next();
+                     },time*1000)
+                 }
+             })(time)
+             this.taskList.unshift(fn);
+             return this
+         }
+         next(){
+             const fn=this.taskList.shift();
+             fn&&fn();
+         }
+
+     }
+
+     let LazyMan=function (name) {
+         return new SomePro(name);
+     }
+  */
+
+    // LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(5).sleep(10).eat('junk food');
+
+    // 36、已知如下代码，如何修改才能让图片宽度为 300px ？注意下面代码不可修改。
+
+
+    // 1、width：300px !improtant
+    // 2、max-width:300px;
+    // 3、transform:scale()
+
+    // 37、ES6转ES5的思路是利用AST抽象语法树。
+
+
+    // 38、[2, 10, 3, 4, 5, 11, 10, 11, 20]
+    // [[2,3,4,5],[10,11],[20]]
+    // 生成一个指定位数的数组，要求最后的结果分成多个数组，且每个数组里的元素是相邻的
+    /*
+
+        console.log(scArr(20));
+        function scArr(len) {
+            let result=[];
+            let r=[];
+            for(let i=0;i<len;i++){
+                result.push(Number((Math.random()*100).toFixed(0)))
+            }
+            result=[...new Set(result)].sort((a,b)=>a-b);
+            console.log(result)
+            for(let i=0;i<result.length;i++){
+                let index=result.length;
+                let temp=[result[i]];
+                for(let j=i+1,num=1;j<result.length;j++,num++){
+                    if(result[i]+num===result[j]){
+                        temp.push(result[j])
+                    }else{
+                        index=j-1;
+                        break
+                    }
+                }
+                i=index
+                r.push(temp)
+            }
+            return r
+        }
+
+    */
+
+    // 39、函数柯里化的通用实现，实现一个函数 add(1)(2)(3)==6 add(1,2)(3)==6 add(1,2,3)==6
+    // 通用实现这么理解，利用闭包，保存传入的参数，递归调用，返回一个函数，判断最新的参数的长度是不是大于fn的长度，则 直接调用，fn.apply(this,newArg)，否则的话递归调用，curry.call(this,fn,newArg);
+    /*   function curry(fn,arg) {
+           arg=arg||[];
+           let len=fn.length;
+           return function () {
+               let arg2=[...arguments];
+               let newArg=arg.concat(arg2);
+               if(newArg.length<len){
+                   return curry.call(this,fn,newArg)
+               }else{
+                   return fn.apply(this,newArg)
+               }
+           }
+       }
+       let adder=(a,b,c)=>a+b+c;
+       let add=curry(adder);
+       console.log(add(1)(2)(3));
+       console.log(add(1,2)(3));
+       console.log(add(1,2,3));*/
+
+    // 40、字符串大小写取反。
+    /*  let str='abcDEFG';
+      // 结果是：'ABCdefg';
+      function zh(str){
+          let r=[...str];
+         let result=r.map(v=>{
+              if(v===v.toLowerCase()){
+                  v=v.toUpperCase()
+              }else{
+                  v=v.toLowerCase()
+              }
+              return v
+          });
+          return result.join('')
+      }
+      console.log(zh(str))
+      // console.log(str.toLowerCase())
+      // console.log(str.toUpperCase())*/
+
+    // 41、查找字符串出现的位置
+    /*
+
+        let str1='abcdefg';
+        let str2='efg';
+
+        const findSome=(s,t)=>{
+            if(t.length>s.length) return -1
+            for(let i=0;i<s.length;i++){
+                if(s.slice(i,i+t.length)==t) return i
+            }
+            return -1
+        }
+        console.log(findSome(str1,str2))
+
+    */
+    // 42、讲解一下 proxy的作用以及用法
+    // 在vue3.0中使用了proxy代替了Object.defineProperty，因为Object.defineProperty无法对数组拦截，且对深层次对象的处理不友好。proxy的出现解决了这个问题，常用的拦截方法多达13种。
+    // 具体如何使用呢：
+    /* let input=document.getElementById('input');
+     let content=document.getElementById('showInputContent');
+     let obj={};*/
+    /*
+    let newObj=new Proxy(obj,{
+        get:function (target, p, receiver) {
+            return Reflect.get(target,p,receiver);
+        },
+        set(target, p, value, receiver){
+            if(p==='text'){
+                input.value=value;
+                content.innerHTML=value;
+            }
+            return Reflect.set(target, p, value, receiver);
+         }
+    });
+    input.addEventListener('keyup',function (e) {
+        newObj.text=e.target.value;
+    })*/
+
+    // 那么如何使用Object.defineProperty实现数据绑定呢？
+
+    /* Object.defineProperty(obj,'text',{
+         get(){
+             // return obj
+         },
+         set(v) {
+             content.innerHTML=v
+             // return v
+         }
+     })
+     input.addEventListener('keyup',function (e) {
+         obj.text=e.target.value;
+     })*/
+
+
+
+    /*
+        let arr1=[1,2,3,4,5]; let target=5;
+        arr=[0,3,1,2];
+        console.log(f1(arr1,target))
+        function f1(arr,target) {
+            let res=[];
+            for(let i=0;i<Math.floor(arr.length/2);i++){
+                for(let j=0;j<arr.length;j++){
+                    if((arr[i]+arr[j]===target)&&i!==j){
+                        res.push(i,j)
+                    }
+                }
+            }
+            return res
+        }*/
+
+    /*  43 对象的键名字
+        // example 1
+        var a={}, b='123', c=123;
+        a[b]='b';
+        a[c]='c';
+        console.log(a[b]);
+
+        // 对象的键只能是string或者 Symbole值
+
+        var a={}, b=Symbol('123'), c=Symbol('123');// 值不一样
+        a[b]='b';
+        a[c]='c';
+        console.log(a[b]);
+        //b
+
+        var a={}, b={key:'123'}, c={key:'456'};
+        a[b]='b';
+        a[c]='c';
+        console.log(a[b]);
+        //c  */
+
+
+    /*  // 44、输入: [1, 2, 3, 4, 5, 6, 7] 和 k = 3
+      // 输出: [5, 6, 7, 1, 2, 3, 4]
+      let arr=[1, 2, 3, 4, 5, 6, 7];
+      function f1(arr, k) {
+          if(arr.length<k) return
+          let arr1=arr.splice(-k);
+          console.log(arr1)
+          console.log(arr)
+          return arr1.concat(arr)
+      }
+      console.log(f1(arr,3))
+  */
+    // 45、react-router中的Link
+    // Link和普通的a标签有什么区别呢
+    // Link最终生成出来的也是a标签但是他禁止掉了a的href跳转，会去匹配路由信息。
+
+    // 46、终究是还要面对 转化树。
+    // 原始 list 如下
+    /* let list =[
+         {id:1,name:'部门A',parentId:0},
+         {id:2,name:'部门B',parentId:0},
+         {id:3,name:'部门C',parentId:1},
+         {id:4,name:'部门D',parentId:1},
+         {id:5,name:'部门E',parentId:2},
+         {id:6,name:'部门F',parentId:3},
+         {id:7,name:'部门G',parentId:2},
+         {id:8,name:'部门H',parentId:4}
+     ];
+     // const result = convert(list);
+
+     // 转换后的结果如下
+     let result = [
+         {
+             id: 1,
+             name: '部门A',
+             parentId: 0,
+             children: [
+                 {
+                     id: 3,
+                     name: '部门C',
+                     parentId: 1,
+                     children: [
+                         {
+                             id: 6,
+                             name: '部门F',
+                             parentId: 3
+                         }, {
+                             id: 16,
+                             name: '部门L',
+                             parentId: 3
+                         }
+                     ]
+                 },
+                 {
+                     id: 4,
+                     name: '部门D',
+                     parentId: 1,
+                     children: [
+                         {
+                             id: 8,
+                             name: '部门H',
+                             parentId: 4
+                         }
+                     ]
+                 }
+             ]
+         }
+     ];*/
+    /* function convert(list,parentId=0) {
+         let res=[];
+         for(let i=0;i<list.length;i++){
+             if(list[i].parentId===parentId){
+                 let children=convert(list,list[i].id);
+                 if(children.length){
+                     list[i].children=children;
+                 }
+                 res.push(list[i])
+             }
+         }
+         return res
+     }
+
+     console.log(convert(list))*/
+    /*
+        function convert1(list){
+            let res=[];
+            let obj={};
+            list.forEach(item=>{
+                obj[item.id]=item;
+            });
+            console.log(obj)
+            for(let v of list){
+                if(v.parentId===0){
+                    res.push(v)
+                }
+                if(obj[v.parentId].children){
+
+                }else{
+
+                }
+            }
+            return res
+        }
+
+        console.log(convert1(list))
+
+        */
+
+    // 47、深拷贝浅拷贝的实现
+    /*
+
+        function deepClone(obj) {
+            let res=Array.isArray(obj)?[]:{};
+            for(let i in obj){
+                if(obj.hasOwnProperty(i)){
+                    if(typeof obj[i]=='object'||typeof obj[i]=='function'&&obj[i]!==null){
+                        res[i]=deepClone(obj[i]);
+                    }else{
+                        res[i]=obj[i]
+                    }
+                }
+            }
+            return res
+        }
+
+        let obj1={
+            a:1,
+            fn:function(){},
+            arr:[1,2,3]
+        }
+
+        function clone(obj) {
+            let res=Array.isArray(obj)?[]:{};
+            for(let i in obj){
+                res[i]=obj[i]
+            }
+            return res
+        }
+    *//*
+
+    // 48、
+    function changeObjProperty(o) {
+        o.siteUrl = "http://www.jd.com"
+        o = new Object()
+        o.siteUrl = "http://www.google.com"
+    }
+    let webSite = new Object();
+    changeObjProperty(webSite);
+    console.log(webSite.siteUrl); // http://www.jd.com
+
+
+    */
+
+
+    // 49、
+    // let input=document.getElementById('input');
+    // input.addEventListener('compositionstart',function (e) {
+    //     console.log(e)
+    // })
+    // compositionupdate
+
+    // 50、Promise.all的作用是接收几个promise的状态返回时，需要等待全部返回正确，才会返回结果。
+
+    /* let p1=new Promise(resolve => {
+         resolve('goo');
+     })
+     let p2=new Promise(resolve => {
+         resolve('e00');
+     })
+     // 使用是这样使用的，
+     Promise.all([p1,p2]).then(ress=>{
+         console.log(ress)
+     })*/
+
+    /* // 50、打印出来对称数
+     //  1，11，121，131 1111 1221
+      function f1(min,max) {
+          let res=[];
+          for(let num=min;num<=max;num++){
+              let arr1=[...num.toString()];
+              let arr2=[...num.toString()].reverse();
+              if(arr1.join(',')===arr2.join(',')){
+                  res.push(num)
+              }
+          }
+          return res
+      }
+      console.log(f1(1,100))*/
+
+
+    // 51、给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+    //     示例:
+    //         输入: [0, 1, 0, 3, 12]
+    // 输出: [1, 3, 12, 0, 0]
+    // 复制代码说明:
+    //
+    //
+    //     必须在原数组上操作，不能拷贝额外的数组。
+    //
+    //
+    //     尽量减少操作次数。
+    /*
+        let arr1=[0, 1,0,0, 0, 3, 12]
+        function f1(arr) {
+            let j=0;
+            for(let i=0;i<arr.length-j;i++){
+                if(arr[i]===0){
+                    arr.push(0);
+                    arr.splice(i,1);
+                    j++;
+                    i--;
+                }
+            }
+            return arr
+        }
+        function move(arr){
+            var n = 0;
+            for(var i = 0; i < arr.length; i++){
+                if(arr[i] === 0){
+                    arr.splice(i, 1);
+                    n++;
+                    i--;
+                }
+            }
+            while(n--){
+                arr.push(0);
+            }
+            return arr;
+        }
+
+        //利用下标
+
+        function f2(arr){
+            let count=0;
+            for(let i=0;i<arr.length;i++){
+                if(arr[i]===0){
+                    count++
+                }else if(arr[i]!==0){
+                    arr[i-count]=arr[i];
+                    arr[i]=0;
+                }
+            }
+            return arr
+        }
+
+        console.log(f2(arr1))*/
+
+
+    // 52、请实现一个 add 函数，满足以下功能
+    /*add(1); 			// 1
+    add(1)(2);  	// 3
+    add(1)(2)(3)；// 6
+    add(1)(2, 3); // 6
+    add(1, 2)(3); // 6
+    add(1, 2, 3); // 6
+    */
+    /* function curry(fn,arg) {
+         arg=arg||[];
+         let len=fn.length;
+         return function () {
+             let arg2=[...arguments];
+             let newArg=arg.concat(arg2);
+             if(newArg.length<len){
+                 return curry.call(this,fn,newArg)
+             }else{
+                 return fn.apply(this,newArg)
+             }
+         }
+     }
+
+     function add() {
+         let arg=[...arguments];
+         let resFn=function () {
+             arg.push(...arguments);
+             return resFn
+         }
+         resFn.toString=function () {
+             return arg.reduce((a,b)=>a+b)
+         }
+         return resFn
+     }
+     console.log(Number(add(1,2)(2)))
+ */
+    // 给定 nums = [2, 7, 11, 15], target = 9
+    //
+    // 因为 nums[0] + nums[1] = 2 + 7 = 9
+    // 所以返回 [0, 1]
+    /*
+        let nums = [2, 7, 11, 15];
+        let a1=[1,2,3,4,5,6];
+        function f1(arr, target) {
+            let res=[];
+            for(let i=0;i<arr.length;i++){
+                let index=arr.indexOf((target-arr[i]),i);
+                if(index>-1){
+                    res.push(i,index);
+                }
+            }
+            return res
+        }
+        console.log(f1(a1,9))
+    */
+
+    // let url=new URL('http:www.aidi.com');
+    // console.log(url)
+    /*
+        let url='https:/www.baidu.com/index.html'
+
+        console.log(isUrl(url))
+        function isUrl(url) {
+            try {
+                new URL(url);
+                return true
+            }catch (e) {
+                return false
+            }
+        }*/
+
+
+    // 53、用 JavaScript 写一个函数，输入 int 型，返回整数逆序后的字符串。如：输入整型 1234，返回字符串“4321”。要求必须使用递归函数调用，不能用全局变量，输入函数必须只有一个参数传入，必须返回字符串。
+/*
+    console.log(reverseStr(12345));
+    function reverseStr(num) {
+         num=num.toString();
+        if(num.length===1) return num;
+        return num.slice(-1)+reverseStr(num.slice(0,-1))
+    }
+
+    */
+ /*   function Foo() {
+        Foo.a = function() {
+            console.log(1)
+        }
+        this.a = function() {
+            console.log(2)
+        }
+    }
+    Foo.prototype.a = function() {
+        console.log(3)
+    }
+    Foo.a = function() {
+        console.log(4)
+    }
+    Foo.a();  4
+    let obj = new Foo(); //主要做了两件事：讲Foo的a设为1，在新实例的a设为2.
+    obj.a();   2
+    Foo.a();   1*/
+
+
+</script>

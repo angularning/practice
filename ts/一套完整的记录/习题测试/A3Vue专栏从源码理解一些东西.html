@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>不只是Vue,可能是小细节</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <style>
+        .word{
+            overflow: hidden;
+            display: inline-block;
+            text-overflow: ellipsis;
+            white-space: normal;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <nav>Vue栏目</nav>
+    <main>
+        <ul>
+            <li>
+                <h3>很不错的vue文章</h3>
+                <a class="word" href="https://mp.weixin.qq.com/s/Rc7OWwLXr2ZLFjZyp5MEmg" target="_blank">
+                    https://mp.weixin.qq.com/s/Rc7OWwLXr2ZLFjZyp5MEmg
+                </a>
+            </li>
+            <li>
+                1、谈一下vue的生命周期
+            </li>
+            <li>
+                2、vue是如何实现数据的绑定的
+            </li>
+            <li>
+                3、vue2.0和3.0区别（数据拦截的区别）
+            </li>
+            <li>
+                4、讲解一下MVVM
+            </li>
+            <li>
+                5、vue中的nextTick知道吗？原理是什么？
+            </li>
+            <li>
+                6、vue的Computed和Watch有什么区别？
+            </li>
+            <li>
+                7、vue中的data为什么是一个Function,而且需要return出去，为什么不是Object?
+            </li>
+            <li>
+                8、vue事件绑定的原理
+            </li>
+            <li>
+                9、vue的模板编译原理？AST
+            </li>
+            <li>
+                10、vue中的diff算法是如何实现呢
+            </li>
+            <li>
+                11、vue中的虚拟DOM是如何实现呢？
+            </li>
+            <li>
+                12、vue虚拟DOM中的key的作用是什么？
+            </li>
+            <li>
+                13、keep-alive的作用是什么呢？
+            </li>
+            <li>
+                14、vue是如何通信呢传值？
+            </li>
+            <li>
+                15、SSR有了解过吗？
+            </li>
+            <li>
+                16、vue为什么只能有一个根节点，为什么要用template包裹起来？
+            </li>
+            <li>
+                17、vue如何优化，提升性能呢？
+            </li>
+            <li>
+                18、v-if和v-show的区别？
+            </li>
+            <li>
+                19、vue中的两种路由方式？
+            </li>
+        </ul>
+    </main>
+    <footer></footer>
+</div>
+</body>
+</html>
+<script>
+    //不一定按照顺序来，可能是某个知识点。
+    // 实现一个new
+/*
+    function _new(fn) {
+        let obj={};
+        let arg=[...arguments].splice(1);
+        // if(fn!==null) obj.__proto__=fn.prototype;
+        obj.__proto__=fn.prototype;
+        fn.apply(obj,arg);
+        // 当然如果更完善的话需要判断类型
+        // let res=fn.apply(obj,arg);
+        // if((typeof res==='object'||typeof res==='function')&&res !==null){
+        //   return res
+        // }
+        // return obj
+        return obj
+    }
+    */
+
+/*
+    // 如何实现通用化的curry函数呢？
+    function curry(fn, arg = []) {
+        let len=fn.length;
+        return function () {
+            let arg1=[...arguments];
+            let newArg=arg.concat(arg1);
+            if(newArg.length<len){
+                return curry.call(this,fn,newArg)
+            }else{
+                return fn.apply(this,newArg)
+            }
+        }
+    }
+    // add(1)(2)(3)  6
+    // add(1,2)(3)  6
+    // add(1,2,3)   6
+    function adder(a,b,c) {
+        return a+b+c
+    }
+    let add=curry(adder);
+    console.log(add(1)(2)(3))
+
+    */
+/*
+
+    // 如何实现 instanceof
+    // console.log([1] instanceof Array)
+    // 查找原型链，看是否能找到
+    function _instanceof(left, right) {
+        let rightPrototype=right.prototype;
+        let left__proto__=left.__proto__;
+        while (true){
+            if(left__proto__===null){
+                return false
+            }
+            if(left__proto__===rightPrototype){
+                return true
+            }
+            left__proto__=left__proto__.__proto__;
+        }
+    }
+    // console.log(_instanceof({},Array))
+
+*/
+
+    // 1、vue的生命周期大概分为以下几个阶段
+
+    // beforeCreate created beforeMount mounted beforeUpdate update beforeDestroy destroyed
+    // 在beforeCreate的时候，页面还没有加载,data中的数据，无法使用。
+    // 在created中，数据已经加载，可以修改数据，但无法触发update
+    // 在beforeMount中，虚拟DOM已经创建完成，可以修改数据，但不会触发更新。
+    // 在mounted中，真实Dom完成了渲染，在此状态下，可以进行网络请求。
+    // 在beforeUpdate中，响应式数据发生更新，在此状态修改数据，不会触发渲染
+    // 在updated中，更新之后，组件DOM渲染已经完成，尽量避免在此阶段修改数据，会造成无限循环。
+    // 在beforeDestroy中，实例销毁之前，可以清除定时器等。
+    // destroyed,组件已经完全销毁，实例不存在，监听也不存在了。
+
+    // 2、vue的数据绑定是双向的，数据的修改会表现在view上，同时view的变化，也会体现在data上。
+    // 在vue2.0中使用的是objectDefineProperty,对数据不同的属性进行拦截监听，转变为 getter,setter的形式，通过Dep,通知Watcher,数据发生变化，进行更新操作。
+    // 在vue2.0中，不能对数组进行拦截监听，这一点在vue3.0中得到了优化，使用了proxy代替了ObjectDefineProperty。
+
+    // 4、MVVM是一种数据结构模型， 其中M为model,V是视图层View,VM是 view-model，相当于是一个桥梁，model发生改变，可以体现在view上，同时，view发生改变，也会反馈到model上。
+
+
+    // 5、vue中的nextTick是Dom更新完成之后的一个延迟回调，常见的有 promise,MutationObserver setImmediate, setTimeout
+    // vue中的UI Render并不是直接在数据发生变化后渲染的，而是在同一个事件循环完成之后，这个时候，nextTick()，在循环之后执行
+
+    // 6、Vue中的computed是计算属性，某个属性的变化依赖其它属性，具有缓存性，可以用来处理比较复杂计算的属性数据。watcher是监听属性，可以对某一个数据进行监听变化，没有缓存属性。
+
+    // 7、Vue中某个组件的data，可能会被其它多个组件使用，如果返回的是一个对象，对象是引用类型，某一个实例的data发生改变，会影响到其它实例的data，所以需要时候一个Function,而且需要return 出去。
+
+    // 8、vue事件绑定的原理其实 就是对data的各个属性的拦截监听，然后具体反映到DOM上的过程，大致可以这么理解。
+/*
+
+             virtual
+             Dom Tree<-----Compontent/Funtion/Render<-------- watcher
+                                                               |    |
+                                                               |    |
+                                                    | ———————> |    |   (组件更新)
+                                                    |               |
+                                                    |               |
+               Data----->Observer-----> Data/setter/getter-----——->Dep
+
+*/
+
+    // 9、vue模板编译的原理是什么呢？
+    // 大概分为三个过程，首先是先产生出虚拟DOM，把真真的DOM已对象的形式表现出来，接下来使用Diff算法，比较新旧树节点的差异，最后使用pach算法，把这些差异进行处理渲染成真正的DOM/
+    // 具体是如何理解的呢？这就需要细分，虚拟DOM如何产生的呢？
+
+    // 这是一个大的概念
+
+    // 省略
+    // 。。。。
+
+
+    // 10。diff算法，大致可以这么划分，首先，先对比根节点，是否相同，在对比子节点是否相同
+
+
+    // 11、在vue中，比如循环的时候，往往要求我们在循环列表上加上key，这是为什么呢？而且虚拟DOM中也需要有key
+    // 因为，Vue中key可以提高对比效率，提高渲染速度。在diff算法中，如果有了key值，可以更高效的复用可以使用的代码
+
+
+    // 13、keep-alive的作用是什么呢
+    // 起到缓存组件的作用，在组件外加上这个了之后，组件，在刷新加载的时候回优先从缓存读取，不会卸载组件
+
+    // 14、vue是如何通信呢？父传子 使用props 子传父 $emit 兄弟传值可以通过 事件中心Event Bus，也可以使用 vuex
+
+    // 15、SSR是一种服务端渲染html页面然后把HTML页面返回前端展示，需要后端配合，优点是，首屏加载快，对SEO友好。缺点是，只能在beforeCreate created两个周期中调用。
+
+    // 16、只有一个el的原因是，只有一个入口，多个入口无法正常解析。
+    // template的特点是无效性，任意性
+
+
+
+
+/*
+
+    Last: 如何优化呢？每个项目都是这样，最后肯定都少不了优化，代码review。
+    1、减少data中的数据，不用的数据删除掉，因为都需要被监听拦截。
+    2、使用v-if 》v-show
+    3、如果是v-for中的需要有事件，通过事件代理。
+    4、部分组件使用keep-alive
+    5、图片使用懒加载。
+    6、key要保持唯一性。
+    7、按需加载js，组件，模块等。
+*/
+
+</script>

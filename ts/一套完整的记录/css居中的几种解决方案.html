@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;padding:0;
+        }
+        .bgGry{
+            background: #eee;
+            text-align: center;
+            height: 500px;
+            display: table;
+            width: 100%;
+            /*position: relative;*/
+        }
+        .center{
+
+            /*margin: 0 auto;*/
+            display: table-cell;
+            vertical-align: middle;
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top:50%;*/
+            /*transform: translate(-50%,-50%);*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*top: 0;*/
+            /*bottom: 0;*/
+            /*margin:auto;*/
+        }
+        .centerBox{
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+<div class="bgGry">
+    <div class="center">
+        <div class="centerBox">
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+第一种：使用display flex align-item:center; justify-content:center;
+第二种：外部使用相对定位，内部使用绝对定位，left:0;right:0;top:0;bottom:0;margin:auto;
+第三种：父元素使用相对定位，子元素使用绝对定位，left:50%;top:50%;transform:translate(-50%,-50%);
+第四种：利用三层元素 ，最外层 display:table;第二层 display:table-cell;第三层利用margin:0 auto;

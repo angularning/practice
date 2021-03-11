@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>javaScript的继承相关的实现</title>
+</head>
+<body>
+1、原型链继承
+
+</body>
+</html>
+<script>
+   function Person(e) {
+       this.name=e;
+       this.getName=function () {
+           alert(this.name)
+       }
+   }
+   Person.age=18
+    console.log(Person)
+    function child1(){
+       this.name='小小'
+    }
+
+
+
+    // function swap(a,b){
+    //    let {c,d,e,f}=config
+    //     [a,b]=[b,a];
+    //    return [a,b]
+    // }
+
+    // console.log(swap(1,3))
+
+   let obj1={a:1,b:2};
+   let obj2=Object.assign({},obj1);
+   obj1.a=4
+   console.log(obj1)
+
+   let obj3=deepClone(obj1);
+   console.info(obj3)
+    function deepClone(target){
+       return JSON.parse(JSON.stringify(target))
+    }
+
+    function clone(target) {
+        if(typeof target !=='object') return
+
+    }
+
+    ["1", "2", "3"].map(parseInt)
+    console.log(null instanceof Object)
+
+    (function (window) {
+
+    })(window)
+    (function(){}())
+
+    let promise=new Promise(((resolve, reject) => {
+        if(true){
+            resolve('')
+        }else{
+            reject('')
+        }
+    }))
+</script>

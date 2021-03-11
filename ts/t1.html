@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="listPage">
+
+</div>
+</body>
+</html>
+<script>
+    // 如何让一个对象的任何属性都输入 30
+    var newObj=new Object();
+    newObj.name='a'
+    newObj.age='b'
+    newObj.tall='c'
+    var proxy=new Proxy(
+        newObj,{
+            get(target, p, receiver) {
+                console.log(target)
+                console.log(p)
+                console.log(receiver)
+                return 30
+            }
+        }
+    );
+    // console.log(proxy.name)
+
+    let person={
+        name:'网易',
+        sex:'men'
+    }
+    let proxyP=new Proxy(person,{
+        get(target, p, receiver) {
+            if(p in target){
+                return target[p]
+            }else{
+                throw new ReferenceError('报错')
+            }
+        }
+    })
+    console.log(proxyP.sex)
+
+    //
+    // var list=[{"id":23,"platform":1,"title":"“香港是中国的香港！","shareSynopsis":"香港是中国的","contentType":2,"coverImage":"http://p2a60yqmm.bkt.clouddn.com/localbanner%2F15712976571044549.jpg","textContent":"https://3w.huanqiu.com/a/170373/9CaKrnKni7i?agt=8","status":0,"createTime":1571297659000},{"id":22,"platform":1,"title":"一个新的文章","shareSynopsis":"文章","contentType":1,"coverImage":"http://p2a60yqmm.bkt.clouddn.com/localbanner%2F15712961834498787.jpg","textContent":"我是新闻","status":0,"createTime":1571296185000},{"id":21,"platform":1,"title":"我是一篇文章","shareSynopsis":"很好的简介","contentType":1,"coverImage":"http://p2a60yqmm.bkt.clouddn.com/localbanner%2F15712959480748782.jpg","textContent":"我也是新闻啊","status":0,"createTime":1571295948000},{"id":18,"platform":1,"title":"ffff","shareSynopsis":"1","contentType":1,"coverImage":"http://p2a60yqmm.bkt.clouddn.com/localbanner%2F15711931882294766.jpg","textContent":"11","status":0,"createTime":1571193188000},{"id":16,"platform":1,"title":"2314124","shareSynopsis":"124124","contentType":1,"coverImage":null,"textContent":"1234124","status":0,"createTime":1570780835000},{"id":15,"platform":1,"title":"32412","shareSynopsis":"4123412","contentType":1,"coverImage":null,"textContent":"41241","status":0,"createTime":1570780825000},{"id":14,"platform":1,"title":"32143214","shareSynopsis":"2141","contentType":1,"coverImage":null,"textContent":"214214","status":0,"createTime":1570780817000},{"id":13,"platform":1,"title":"23142","shareSynopsis":"4213421","contentType":1,"coverImage":null,"textContent":"4231412","status":0,"createTime":1570780803000},{"id":12,"platform":1,"title":"23141","shareSynopsis":"421412","contentType":1,"coverImage":null,"textContent":"4123412","status":0,"createTime":1570780795000},{"id":11,"platform":1,"title":"52452","shareSynopsis":"23141234","contentType":1,"coverImage":null,"textContent":"2314124","status":0,"createTime":1570780787000}];
+    let list=[{"id":0,"title":"第一个title"},{"id":1,"title":"中国人"},{"id":2,"title":"很好"}]
+    let newList=[];
+    let ListHtml='';
+
+    let obj={
+        name:'xiaozhang',
+        age:18
+    }
+    let result= list.forEach(((value, index) => {
+        return value
+    }))
+
+
+
+    // console.log(result)
+    /*list.forEach(((value, index, array) => {
+        console.log(value)
+        console.log(index)
+    }))*/
+    // let m=new Map();
+    // m.set({name:'111',abc:222},111).set("a",2)
+    /* m.set(1,'a');
+     m.set('a',2).set(3,'b');
+     console.log(m)
+     let s=new Set();
+     s.add(1).add(2).add(3);*/
+    // console.log(s)
+    /* for(let v of m){
+         console.log(v)
+     }*/
+    /*for(let i=0;i<list.length;i++){
+        ListHtml+='<h3>'+list[i].title+'</h3>'
+    }*/
+    /*for(let value of list){
+        ListHtml+='<h3>'+value.title+'</h3>'
+    }
+    for(let index in list){
+        ListHtml+='<h3>'+list[index].title+'</h3>'
+    }*/
+    document.getElementById('listPage').innerHTML=ListHtml
+
+
+
+    /*list.map(item=>{
+        console.info(item)
+        if(item.id>15){
+            newList.push(item)
+        }
+    })*/
+
+
+    /* for(let v of list){
+         console.info(v)
+     }*/
+    // console.log(newList)
+
+
+
+    // add(1)(2)(3) = 6;
+    // add(1, 2, 3)(4) = 10;
+    // add(1)(2)(3)(4)(5) = 15;
+    /* let add= function(x){
+         return function(y){
+             return function (z){
+                 return x+y+z
+             }
+         }
+     }
+     function someAdd(){
+         let newArr=[...arguments];
+         return newArr.reduce(function (a, b) {
+             return a+b
+         })
+     }*/
+    /* let add=function(){
+         return [...arguments].reduce(function(a,b){
+             return a*b
+         })
+     }
+     // console.log(add(1)(2)(3))
+      function currying(fn, args) {
+          var args = Array.prototype.slice.call(arguments);
+          var fn = function() {
+              var newArgs = args.concat(Array.prototype.slice.call(arguments));
+              return currying.apply(this, newArgs);
+          }
+          fn.toString = function() {
+              return args.reduce(function(a, b) {
+                  return a * b;
+              })
+          }
+          return fn;
+      }
+      function dos(a,b,c){
+         return a*b*c
+      }
+
+      var muit=currying(dos)
+
+      console.info(muit(1)(2)(3))*/
+
+    /*
+        function add(){
+            var args=[];
+            var _args=function(){
+                args.push(...arguments);
+                return _args
+            }
+            console.log(args)
+        }
+
+        const nest = (items, id = null, link = 'parent_id') =>
+            items
+                .filter(item => item[link] === id)
+                .map(item => ({ ...item, children: nest(items, item.id) })
+                );*/
+    const arr1 = [
+        { id: 1, parent_id: '' },
+        { id: 2, parent_id: 1 },
+        { id: 3, parent_id: 1 },
+        { id: 4, parent_id: 2 },
+        { id: 5, parent_id: 4 }
+    ];
+    // console.log(JSON.parse(JSON.stringify(arr1)))
+    console.log(doArr(arr1))
+    function doArr(arr){
+        let newArr=arr,obj={},temp=[];
+        newArr.map(item=>{
+            obj[item.id]=item
+        })
+        newArr.map(item=>{
+            if(item.parent_id==='') temp.push(item)
+            for(let key in obj){
+                if(item.id===obj[key].parent_id){
+                    if(item.children){
+                        item.children.push(obj[key])
+                    }else{
+                        item.children=[obj[key]]
+                    }
+                }
+            }
+        })
+        return temp
+    }
+
+
+
+    /* const newTree=(items,id='')=>items.filter(
+         item=>(item['parent_id']===id)
+     ).map(item=>({...item,children:newTree(items,item.id)}));
+     console.log(newTree(arr1))*/
+
+    // const arr2=arr1.map((item)=>({...item,pid:item.id}))
+    //  console.log(arr2)
+    // const doArr=(items,id)=>{items=>{console.info(id)}}
+
+    // console.log(doArr(comments))
+
+
+
+
+    /*
+        function jc(num){
+            if(num<=1)
+                return num=1
+            return num*jc(num-1)
+
+        }*/
+
+    // console.log(jc(3))
+    /*
+        1,1,2,3,5,8,13,21
+        // F(n)=F(n-1)+F(n-2)
+        function fbsl(n){
+            if(n==0) return n=0
+            if(n<=2) return n=1
+            return fbsl(n-1)+fbsl(n-2)
+        }*/
+    // console.log(fbsl(8))
+    // const nest = (items, id = null, link = 'parent_id') =>
+    //     items
+    //         .filter(item => item[link] === id)
+
+    // console.log(nest(comments))
+    /* 青蛙跳台阶问题：一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）
+     {
+         1:1,
+         2:2,
+         3:3,
+         4:5 1,1,1,1    1,2,1    1,1,2  2,1,1  2,2
+         5:8  1,1,1,1,1   1,2,1,1    1,1,2,1   1,1,1,2  2,1,1,1  2,2,1    2,1,2  1,2,2
+         6:13
+     }*/
+    /*1,2,3,4,5,6
+    function jcFor(n){
+        if(n<=1) return 1
+        let n1=1,n2;
+        for(let i=1;i<n;i++){
+            n2=n1*(i+1);
+            n1=n2
+        }
+        return n2
+    }
+    // console.log(jcFor(4))
+
+    function fbslFor(n){
+        if(n==0) return 0
+        if(n<=2) return 1
+        let f1=1,f2=1,f3=0;
+        for(let i=2;i<n;i++){
+            f3=f1+f2;
+            f1=f2;
+            f2=f3;
+        }
+        return f2
+    }
+    // console.info(fbslFor(5))
+
+    const nA=[
+        {
+            id:1,
+            parent_id:null,
+            children:[
+                {
+                    id:2,
+                    parent_id:1,
+                    children:[
+                        {
+                            id:4,
+                            parent_id:2,
+                            children:[
+                                {
+                                    id:4,
+                                    parent_id:4
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id:3,
+                    parent_id: 1
+                }
+            ]
+        }
+    ]*/
+    // const newArr
+    // console.log(nA)
+
+
+    // console.log(nest(comments))
+
+    // console.log(someAdd(1)(2)(3))
+    // console.log(add(1)(2)(3))
+
+
+    // function fbnq(n){
+    //     if(n<1) return n=0;
+    //     if(n<=2) return n=1;
+    //     return fbnq(n-1)+fbnq(n-2)
+    // }
+    // console.log(fbnq(3))
+    // function fbnqFor1(n){
+    //     if(n===0) return 0;
+    //     if(n<=2) return 1;
+    //     let n1=1,n2=1,n3=0;
+    //     for(let i=2;i<n;i++){
+    //         n3=n2+n1;
+    //         n1=n2;
+    //         n2=n3;
+    //     }
+    //     return n3
+    // }
+    // console.log(fbnqFor1(5))
+</script>

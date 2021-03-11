@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节流</title>
+</head>
+<body>
+
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+<p>当某个事件被频繁触发的时候</p>
+</body>
+</html>
+<script>
+    var num=1;
+    function sc() {
+        console.log(num++)
+    }
+    // 第一种使用时间戳
+    function jl(fn, wait) {
+        let st=0;
+        return function () {
+            let _this=this,arg=arguments,nowDate=(new Date()).getTime();
+            if(nowDate-st>wait){
+                fn.apply(_this,arg);
+                st=nowDate;
+            }
+        }
+    }
+    //第二种使用定时器
+    function jl1(fn,wait) {
+        let timeout=null;
+        return function () {
+            let _this=this,arg=arguments;
+            if(!timeout){
+                timeout=setTimeout(function () {
+                    timeout = null;
+                    fn.apply(_this,arg);
+                },wait)
+            }
+        }
+    }
+
+    window.addEventListener('scroll',jl1(sc,1000))
+</script>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta  name="viewport"  content="width=device-width,initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>多维数组转二维</title>
+</head>
+<body>
+可能会遇到很多不同维度的数据，需要转化为二维的，在ES6中新增了一个方法叫做 flat()
+</body>
+</html>
+<script>
+    window.onload=function () {
+        let arr1=[1,[1,2,[3,{a:1,b:function(){}}],4],5];
+        let arr2=[1,2,3,4,5,3,2]
+        // console.log(arr1.flat());
+        /*arr2.reduce(function (prev,cur,index) {
+            console.log(prev, cur, index);
+            return prev + cur;
+        },0);*/
+
+      /* let newArr2=arr2.reduce((prev,cur)=>{
+            return prev+cur
+        })*/
+        let nameNum = arr2.reduce((pre,cur)=>{
+            if(cur in pre){
+                pre[cur]++
+            }else{
+                pre[cur] =1
+            }
+            return pre
+        },{})
+        console.log(nameNum)
+        function myFlat(arr, deep) {
+            if(Object.prototype.toString.call(arr).indexOf('array')>-1){
+
+            }
+        }
+    }
+</script>

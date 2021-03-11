@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Title</title>
+
+</head>
+<body>
+<h3>浏览器有很多种常用的存储方法，大体上分为四种</h3>
+
+
+从以下几点来区分最常用的 sessionStorage,localStorage,cookie，session 的区别，以及优缺点，使用场景。
+1、从存储大小来区分，cookie最小，sessionStorage,和localStorage较大，大约在5M左右。
+2、从时效性来区分，localStorage是永久存储，除非主动删除，sessionStorage在页面关闭的时候消失，cookie可以设置失效时间。
+3、从使用场景来区分，localStorage 可以用来存储比较重要，经常使用的数据，不会丢失。sessionStorage 可以使用在登录会话界面
+cookie 多使用在与服务端通信的时候的数据。
+4、cookie没有更加具体的api操作，需要自己封装一系列增删改查。
+5、session用于服务端存储。和cookie类似
+
+</body>
+</html>
+<script>
+
+    let str='';
+    for(let i=0;i<10;i++){
+        str+=i
+    }
+    setCookie('b', '112', 2)
+    function setCookie(name, value, times) {
+        let t=new Date();
+        t.setDate(t+times);
+        t.toUTCString();
+        document.cookie = `${name}=${value};expires=${times}`
+    }
+    console.log(getCookie('b'))
+    function getCookie(name) {
+        let value;
+        let cookie=document.cookie;
+        let arr=cookie.split(';')
+        for(let i=0;i<arr.length;i++){
+            let s=arr[i].indexOf('=');
+            if(s>-1){
+                console.info(arr[i].substring(0,s))
+                if((arr[i].substring(0,s)).replace(/\s/,'')==name){
+                    let a=arr[i].indexOf('=');
+                    value=arr[i].substring(a+1,arr[i].length)
+                }
+            }
+
+        }
+        return value
+    }
+</script>
