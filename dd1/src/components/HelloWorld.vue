@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    {{num1}}
-    <a @click="toUrl">点击这个</a>
+    <div>空空如也</div>
+    <button>首位</button>
     <!-- <input type="text" v-model="num1" @keyup="add" />
     <span>+</span>
     <input type="text" v-model="num2" @keyup="add" />
@@ -17,9 +17,15 @@ export default {
   props: {
     msg: String
   },
+  mouted() {
+    console.log(12);
+    console.log(document.cookie);
+  },
   setup() {
-    const re = ()=>{};
-    const num1 = ref('didi');
+    const re = () => {
+      console.log(document.cookie);
+    };
+    const num1 = ref("didi");
     const num2 = ref(0);
     const result = ref(0);
     const add = () => {

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基本</title>
+    <style>
+        div>ul>li{
+            text-align: left;
+            list-style: none;
+        }
+        div>ul>li>img{
+            width: 300px;
+            height: 300px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <!-- <h2>大概17个类型，可能有几个会比较多</h2> -->
+        <ul>
+            <li>
+                1、偏函数的理解，以及实现。
+                <pre>
+    概念：理解偏函数的意思，固定函数的一个或多个参数
+    从实现来讲可以分为这几个步骤：
+    首先我们一般是做有占位符的偏函数，意思是固定某些特定位置的参数
+    循环接收参数的的数组，小于fn的length，push上占位符。
+    返回一个函数，在返回函数中定义一个初始的变量 index = 0
+    再次循环 传入的参数 arg ，接收新的参数 newArg,如果arg[i] === 占位符 index++  arg[i] = newArg[index++]
+    循环结束后 return fn.apply(this,arg)
+                </pre>
+            </li>
+            <li>
+                2、函数柯里化的实现，理解。
+            </li>
+            <li>
+                3、数组去重的几种方法，以及统计字符串字符出现的次数。
+            </li>
+            <li>
+                4、数组交并差的方法。
+            </li>
+            <li>
+                5、Promise的理解以及一些实现， then,catch,resolve,reject,finally,all,race
+            </li>
+            <li>
+                6、new的实现理解。
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
+<script>
+    // 1、偏函数。
+    // 可以这么理解偏函数，固定一个函数的一个或多个参数。
+/* 
+    function add (a,b){
+        return a + b + this.value
+    }
+    var value = 'window'
+    // var fn1 = add.bind(null, 1);  // 2window
+    var fn1 = partial(add,1)  // 2obj
+    var obj = {
+        value: 'obj',
+        fn1:fn1
+    }
+    console.log(obj.fn1(1))
+
+    function partial(fn){
+        var arg = [].slice.call(arguments,1);
+        return function(){
+            var newArg = arg.concat([].slice.call(arguments));
+            return fn.apply(this, newArg)
+        }
+    }   */ 
+    // console.log({}.toString.call(Symbol('1')).slice(8, -1).toLowerCase())
+
+    // 具有占位符的偏函数的实现 '_'
+    // ES5
+/*     function partail(fn){
+        var args = [].slice.call(arguments,1);
+        for(let i=args.length;i<fn.length;i++){
+            args.push('_')
+        }
+        return function(){
+            var newArg = [].slice.call(arguments);
+            var index = 0;
+            for(let i = 0;i<args.length;i++){
+                if(args[i] === '_'){
+                    args[i] = newArg[index++]
+                }
+            }
+            return fn.apply(this, args)
+        }
+    }
+
+    function add(a,b,c){
+        return a+b+c
+    }
+    var fn1 = partail(add,'_',1,'_')
+    console.log(fn1(2,1)) */
+
+    // ES6 偏函数
+/* 
+    const partail = (fn,...args)=>{
+        let startNum = 0
+        return (...newArg)=>{
+            newArg.forEach(item=>{
+                let index = args.findIndex(res=>res==='_')
+                if (index<0) return
+                args[index] = item
+                startNum++
+            })
+            if(startNum<newArg.length){
+                newArg = newArg.slice(startNum,newArg.length)
+            }
+            return fn.apply(this, [...args,...newArg])
+        }
+    }
+    function add(a,b,c){
+        return a+b+c
+    }
+    var fn1 = partail(add,'_',1,'_')
+    console.log(fn1(2,3)) */
+
+    // 2、函数的柯里化是把多个参数的函数转化为单一参数的函数。
+    // add(1)(2)(3) === 6
+    // add(1,2,3) === 6
+    // add(1,2)(3) === 6
+   /*  const addNum = (a,b,c)=>a+b+c
+   // ES6的一种方法
+    const curry = (fn)=>{
+        if(fn.length === 1) return fn
+        const next = (...arg)=>{
+            if(arg.length === fn.length){
+                return fn(...arg)
+            } else{
+                return (...arg1)=>{
+                   return next(...arg,...arg1)
+                }
+            }
+        }
+        return next
+    }
+    const add = curry(addNum);
+    console.log(add(1)(2)(3))
+    console.log(add(1,2)(3)) */
+
+    /* // 递归的一种方法
+    const addNum = (a,b,c)=>{
+        return parseInt(a)+ parseInt(b)+parseInt(c)
+    }
+    const curry = (fn,...arg)=>{
+        if(fn.length === arg.length){
+            return fn(...arg)
+        }else{
+            return (...newArg)=>{
+                let allArg = [...arg,newArg]
+                return curry(fn,...allArg)
+            }
+        }
+    }
+    const add = curry(addNum,1,2);
+    console.log(add(1)) */
+
+    // 递归的一个方法
+    // const curry = (fn,...arg)=>{
+    //     if(fn.length<1) return false
+    //     return (...arg1)=>{
+    //         let newArg = [...arg,...arg1];
+    //         if(newArg.length<fn.length){
+    //             return curry(fn,...newArg)
+    //         }else{
+    //             return fn.apply(this,newArg)
+    //         }
+    //     }
+    // }
+
+    // 又是一个递归的方法不过都差不多
+    // const curry = (fn) =>{
+    //     const next = (...arg)=>{
+    //         if(fn.length===arg.length) return fn(...arg)
+    //         return (...newArg)=>{
+    //             return next(...arg,...newArg)
+    //         }
+    //     }
+    //     return next
+    // }
+    
+    // const addNum = (a,b,c)=>a+b+c
+    // const add = curry(addNum);
+    // console.log(add(1)(2)(3))
+    // console.log(add(1,2)(3)) 
+
+    // 数组去重的几种方法，由简单入难点。
+    // const arg = [1,2,3,1,2];
+    // const arg1 = [
+    //     {
+    //         name: 1,
+    //     },
+    //     2,3,
+    //     '2',
+    //     {
+    //         name: 1
+    //     }
+    // ]
+    // 使用循环解决 包含引用数据类型
+    // const uniArr = (arg)=>{
+    //     let temp = [];
+    //     for(let i=0;i<arg.length;i++){
+    //         if(temp.indexOf(JSON.stringify(arg[i]))<0){
+    //             temp.push(JSON.stringify(arg[i]))
+    //         }
+    //     }
+    //     return temp.map(item=>JSON.parse(item))
+    // }
+
+    // 最方便的es6的new Set() 
+    // const uniArr = (arg)=>{
+    //     return [...new Set(arg.map(v=>JSON.stringify(v)))].map(v=>JSON.parse(v))
+    // }
+
+    // 对象的key唯一这个属性  但是无法区分出来字符串和数字
+    // const uniArr = (arg)=>{
+    //     const temp = {};
+    //     for(v of arg){
+    //         if(!temp.hasOwnProperty(JSON.stringify(v))){
+    //             temp[v] = v
+    //         }
+    //     }
+    //     return Object.values(temp)
+    // }
+
+    // 使用reduce方法 
+    // const uniArr = (arr)=>{
+    //     return arr.reduce((total,item)=>{
+    //         if(!total.includes(JSON.stringify(item))){
+    //             return total.concat(JSON.stringify(item))
+    //         }else{
+    //             return total.map(v=>JSON.parse(v))
+    //         }
+    //     },[])
+    // }
+
+    // console.log(uniArr(arg1))
+
+    // 扩展统计字符串中某个字符出现的次数 // 出现最高次数的排在前面
+
+    // const str = 'I Love China，go for it！'
+
+    // const count = (arg)=>{
+    //     let tempObj = arg.split('').reduce((total,current)=>{
+    //          total[current] ? total[current]++: total[current] = 1
+    //          return total
+    //     },{})
+    //     let tempArr = []
+    //     for(i in tempObj){
+    //         tempArr.push({key: i,value:tempObj[i]})
+    //     }
+    //     const sortArr = tempArr.sort((a,b)=>-a.value+b.value);
+    //     return sortArr
+    // }
+    // console.log(count(str))
+
+
+    // 数组的交并差的处理
+    // const arr1 = [1,2,3,{name:1},'22'];
+    // const arr2 = [2,{name:1},'2'];
+
+   /*  const sameArr = (arg1,arg2)=>{
+        let temp = []
+          arg1.forEach(item=>{
+              if(arg2.map(v=>JSON.stringify(v)).includes(JSON.stringify(item))){
+                temp.push(item)
+              }
+          })
+          return temp
+    } */
+    // 可以
+    // const sameArr = (arg1,arg2)=>{
+    //     return arg1.filter(item=>arg2.map(v=>JSON.stringify(v)).includes(JSON.stringify(item)))
+    // }
+    // 使用new Set 来处理
+    // const sameArr = (arg1,arg2)=>{
+    //     return arg1.filter(item=> new Set(arg2.map(v=>JSON.stringify(v))).has(JSON.stringify(item)))
+    // }
+    // console.log(sameArr(arr1,arr2))
+
+
+
+
+    // const arr = [1,[2],[[3]],[[[4]]]]
+    // console.log(arr.flat(Infinity))
+
+    // es5的做法递归
+  /*   const myFlat = (arg)=>{
+        let temp = []
+        if(arg.length<1) return
+        for(let i=0;i<arg.length;i++){
+            if(Array.isArray(arg[i])){
+                temp = temp.concat(myFlat(arg[i]))
+            }else{
+                temp.push(arg[i])
+            }
+        }
+        return temp
+    }
+
+    // es6的做法呢是使用some
+    const myFlat = (arg)=>{
+        while(arg.some(item=>Array.isArray(item))){
+            arg = myFlat(arg).concat(...item)
+        }
+        return arg
+    }
+    console.log(myFlat(arr)) */
+
+    // const p1 = new MyPromise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //         resolve(1)
+    //     },2000)
+    // })
+    // p1.then(res=>{
+    //     console.log(res)
+    //     return 2
+    // }).then(res=>{
+    //     console.log(res)
+    //     return 3
+    // })
+
+    // 红灯3秒亮一次，黄灯2秒亮一次，绿灯1秒亮一次；如何让三个灯不断交替重复亮灯？（用Promise实现）三个亮灯函数已经存在：
+/* 
+    function red() {
+    console.log('red');
+    }
+    function green() {
+        console.log('green');
+    }
+    function yellow() {
+        console.log('yellow');
+    }
+
+    const lighting = (fn,timer)=>{
+        return new Promise(resolve=>{
+            setTimeout(()=>{
+                fn()
+                resolve()
+            },timer)
+        })
+    }
+    const step = ()=>{
+        Promise.resolve().then(()=>{
+            return lighting(red, 3000)
+        }).then(()=>{
+            return lighting(green, 2000)
+        }).then(()=>{
+            return lighting(yellow, 1000)
+        })
+    } */
+    // setInterval(() => {
+    //     step()
+    // }, 6000);
+
+    // Promise的一些完整的实现，需要实现异步调用，then的链式调用，值的穿透。
+
+   /*  class MyPromise{
+         constructor(executor){
+             this.status = 'pending'
+             this._value = undefined
+             this.fulfilledCallbacks = []
+             this.rejectedCallbacks = []
+             let resolve = val =>{
+                 const next = ()=>{
+                    if(this.status !=='pending') return
+                        this.status = 'fulfilled'
+                        this._value = val
+                        while(this.fulfilledCallbacks.length){
+                            const callback = this.fulfilledCallbacks.shift()
+                            callback(val)
+                        }
+                 }
+                 setTimeout(next)
+             }
+             let reject = val=>{
+                 const next = ()=>{
+                    if(this.status!=='pending') return
+                    this.status = 'rejected'
+                    this._value = val
+                    while(this.rejectedCallbacks.length){
+                        const callback = this.rejectedCallbacks.shift()
+                        callback(val)
+                    }
+                }
+                 setTimeout(next)
+             }
+             try{
+                 executor(resolve,reject)
+             }catch(err){
+                 reject(err)
+             }
+         }
+         then(onFulfilled,onRejected){
+             typeof onFulfilled !=='function' ? onFulfilled =val=>val: null
+             typeof onRejected !=='function' ? onRejected =err=>err: null
+             return new MyPromise((resolve,reject)=>{  // 返回一个Promise
+                 let fulfilledFn = val =>{
+                    let x = onFulfilled(val);  // 取出来第一次then返回的数据
+                    try{
+                        x instanceof MyPromise ? x.then(resolve,reject) : resolve(x) // 判断返回的一个promise还是一个普通值
+                    }catch(err){
+                        reject(err)
+                    }
+                 }
+                 let rejectedFn = val =>{
+                     let x = onRejected(val)
+                     try{
+                         x instanceof MyPromise ? x.then(resolve,reject): resolve(x)
+                     }catch(err){
+                         reject(err)
+                     }
+                 }
+                 if(this.status === 'pending'){
+                     this.fulfilledCallbacks.push(fulfilledFn)
+                     this.rejectedCallbacks.push(rejectedFn)
+                 }else if(this.status === 'fulfilled'){
+                    fulfilledFn(this._value)
+                 }else {
+                     rejectedFn(this._value)
+                 }
+            })
+        }
+         catch(reject){
+            return this.then(undefined,reject)
+        }
+         resolve(value){
+            if(value instanceof MyPromise ){
+                return value
+            }else{
+                return new MyPromise(resolve=>resolve(value))
+            }
+        }
+         reject(value){
+            if(value instanceof MyPromise ){
+                return value
+            }else{
+                return new MyPromise(reject=>reject(value))
+            }
+        }
+         finally(callback){
+            return this.then(
+                value=>Promise.resolve(callback()).then(()=>value),
+                error=>Promise.resolve(callback()).then(()=>{throw error})
+            )
+        }
+     }
+ */
+ /* //Promise/A+规定的三种状态
+const PENDING = 'pending'
+const FULFILLED = 'fulfilled'
+const REJECTED = 'rejected' 
+ class MyPromise1 {
+  // 构造方法接收一个回调
+  constructor(executor) {
+    this._status = PENDING     // Promise状态
+    this._value = undefined    // 储存then回调return的值
+    this._resolveQueue = []    // 成功队列, resolve时触发
+    this._rejectQueue = []     // 失败队列, reject时触发
+
+    // 由于resolve/reject是在executor内部被调用, 因此需要使用箭头函数固定this指向, 否则找不到this._resolveQueue
+    let _resolve = (val) => {
+      //把resolve执行回调的操作封装成一个函数,放进setTimeout里,以兼容executor是同步代码的情况
+      const run = () => {
+        if(this._status !== PENDING) return   // 对应规范中的"状态只能由pending到fulfilled或rejected"
+        this._status = FULFILLED              // 变更状态
+        this._value = val                     // 储存当前value
+
+        // 这里之所以使用一个队列来储存回调,是为了实现规范要求的 "then 方法可以被同一个 promise 调用多次"
+        // 如果使用一个变量而非队列来储存回调,那么即使多次p1.then()也只会执行一次回调
+        while(this._resolveQueue.length) {    
+          const callback = this._resolveQueue.shift()
+          callback(val)
+        }
+      }
+      setTimeout(run)
+    }
+    // 实现同resolve
+    let _reject = (val) => {
+      const run = () => {
+        if(this._status !== PENDING) return   // 对应规范中的"状态只能由pending到fulfilled或rejected"
+        this._status = REJECTED               // 变更状态
+        this._value = val                     // 储存当前value
+        while(this._rejectQueue.length) {
+          const callback = this._rejectQueue.shift()
+          callback(val)
+        }
+      }
+      setTimeout(run)
+    }
+    // new Promise()时立即执行executor,并传入resolve和reject
+    executor(_resolve, _reject)
+  }
+
+  // then方法,接收一个成功的回调和一个失败的回调
+  then(resolveFn, rejectFn) {
+    // 根据规范，如果then的参数不是function，则我们需要忽略它, 让链式调用继续往下执行
+    typeof resolveFn !== 'function' ? resolveFn = value => value : null
+    typeof rejectFn !== 'function' ? rejectFn = reason => {
+      throw new Error(reason instanceof Error? reason.message:reason);
+    } : null
+  
+    // return一个新的promise
+    return new MyPromise((resolve, reject) => {
+      // 把resolveFn重新包装一下,再push进resolve执行队列,这是为了能够获取回调的返回值进行分类讨论
+      const fulfilledFn = value => {
+        try {
+          // 执行第一个(当前的)Promise的成功回调,并获取返回值
+          let x = resolveFn(value)
+          // 分类讨论返回值,如果是Promise,那么等待Promise状态变更,否则直接resolve
+          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
+        } catch (error) {
+          reject(error)
+        }
+      }
+  
+      // reject同理
+      const rejectedFn  = error => {
+        try {
+          let x = rejectFn(error)
+          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
+        } catch (error) {
+          reject(error)
+        }
+      }
+  
+      switch (this._status) {
+        // 当状态为pending时,把then回调push进resolve/reject执行队列,等待执行
+        case PENDING:
+          this._resolveQueue.push(fulfilledFn)
+          this._rejectQueue.push(rejectedFn)
+          break;
+        // 当状态已经变为resolve/reject时,直接执行then回调
+        case FULFILLED:
+          fulfilledFn(this._value)    // this._value是上一个then回调return的值(见完整版代码)
+          break;
+        case REJECTED:
+          rejectedFn(this._value)
+          break;
+      }
+    })
+  }
+
+  //catch方法其实就是执行一下then的第二个回调
+  catch(rejectFn) {
+    return this.then(undefined, rejectFn)
+  }
+
+  //finally方法
+  finally(callback) {
+    return this.then(
+      value => MyPromise.resolve(callback()).then(() => value),             //执行回调,并returnvalue传递给后面的then
+      reason => MyPromise.resolve(callback()).then(() => { throw reason })  //reject同理
+    )
+  }
+
+  //静态的resolve方法
+  static resolve(value) {
+    if(value instanceof MyPromise) return value //根据规范, 如果参数是Promise实例, 直接return这个实例
+    return new MyPromise(resolve => resolve(value))
+  }
+
+  //静态的reject方法
+  static reject(reason) {
+    return new MyPromise((resolve, reject) => reject(reason))
+  }
+
+  //静态的all方法
+  static all(promiseArr) {
+    let index = 0
+    let result = []
+    return new MyPromise((resolve, reject) => {
+      promiseArr.forEach((p, i) => {
+        //Promise.resolve(p)用于处理传入值不为Promise的情况
+        MyPromise.resolve(p).then(
+          val => {
+            index++
+            result[i] = val
+            if(index === promiseArr.length) {
+              resolve(result)
+            }
+          },
+          err => {
+            reject(err)
+          }
+        )
+      })
+    })
+  }
+
+  //静态的race方法
+  static race(promiseArr) {
+    return new MyPromise((resolve, reject) => {
+      //同时执行Promise,如果有一个Promise的状态发生改变,就变更新MyPromise的状态
+      for (let p of promiseArr) {
+        MyPromise.resolve(p).then(  //Promise.resolve(p)用于处理传入值不为Promise的情况
+          value => {
+            resolve(value)        //注意这个resolve是上边new MyPromise的
+          },
+          err => {
+            reject(err)
+          }
+        )
+      }
+    })
+  }
+} */
+/* const p1 = new MyPromise((resolve, reject) => {
+    console.log(1)
+    resolve('p1') 
+    setTimeout(() => {
+        reject('2')
+    }, 1000);
+
+})
+const p2 = new MyPromise(resolve=>{
+    console.log(2)
+    resolve('p2')
+})
+const p3 = new MyPromise(resolve=>{
+    console.log(3)
+    setTimeout(() => {
+        resolve('p3')
+    }, 0);
+})
+p1.finally(value=>{
+    console.log('finally')
+})
+
+// all的规则如下，所有传入的promise都需要执行，如果有reject的只返回 reject的结果，否者返回resolve的结果
+const myALlPromise = promiseArr =>{
+    let index = 0
+    let result = []
+    return new MyPromise((resolve,reject)=>{
+        promiseArr.forEach((element,i) => {
+            MyPromise.resolve(element).then(
+                val=>{
+                    index++
+                    result[i] = val
+                    if(index===promiseArr.length){
+                        resolve(result)
+                    }
+                },
+                err =>{
+                    reject(err)
+                }
+            )
+        });
+    })
+}
+
+const myRacePromise = promiseArr =>{
+    return new MyPromise((resolve,reject)=>{
+        promiseArr.forEach(item=>{
+            MyPromise.resolve(item).then(
+                value=>{
+                    resolve(value)
+                },
+                error=>{
+                    reject(error)
+                }
+            )
+        })
+    })
+}
+ */
+// myALlPromise([p3,p2,p1]).then(item=>{
+//     console.log(item)
+// }).catch(err=>{
+//     console.log(err)
+// })
+
+// 先理解一下new的作用，new用来创建一个新的对象，这个新的对象在旧的对象的原型上,通过apply改变this的指向，以及参数传递，判断返回的类型是不是object
+// 返回
+
+const Person = function(name,age){
+    this.name = name
+    this.age = age
+    return this
+}
+// const newObj =new Person('angular',18)
+// console.log(new Object)
+
+
+const _new = (fn,...arg)=>{
+    const obj = new Object()
+    obj.__proto__ = fn.prototype
+    const result = fn.apply(obj,arg)
+    if(typeof result ==='object' || typeof result ==='function'){
+        return result
+    }else{
+        return obj
+    }
+}
+
+const newObj = _new(Person,'angular',18)
+
+console.log(newObj)
+
+
+
+
+</script>
