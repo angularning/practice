@@ -199,23 +199,23 @@
     /*
     // 3、call 和apply，和bind的用处是都可以改变this的指向，区别在于apply 参数是数组，call，参数是string，bind需要执行
      // _1、实现call
-     function _call(content=window){
+     Function.prototype._call = function(content=window){
          let fn=Symbol();
-         content[fn]=this;
+         content.fn=this;
          let arg=[...arguments].splice(1);
-         let result=content[fn](...arg);
-         delete content[fn]
+         let result=content.fn(...arg);
+         delete content.fn
          return result
      }
-     function _apply(content=window,arg) {
-         let f=Symbol(),result;
-         content[f]=this;
+     Function.prototype._apply = function (content=window,arg) {
+         let fn=Symbol(),result;
+         content.fn=this;
          if(Array.isArray(arg)){
-             result=content[f](arg);
+             result=content.fn(arg);
          }else{
-             result=content[f];
+             result=content.fn;
          }
-         delete content[f]
+         delete content.fn
          return result
 
      }
@@ -326,7 +326,7 @@
               a.prototype.getName=function () {
                   return this.name
               }
-              function b(name) {}
+              function b() {}
               b.prototype=new a('小王');
               let c=new b();
               console.log(c.getName())
@@ -1010,7 +1010,7 @@
        }
        console.log(fb(5))*/
     // 函数柯里化的通用实现
-      function curry(fn, arg) {
+    /*   function curry(fn, arg) {
           arg = arg || [];
           let length = fn.length;
           if (typeof fn !== 'function') return false
@@ -1022,18 +1022,18 @@
                   return fn.apply(this,newArg)
               }
           }
-      }
+      } */
 
       // add1(1)(2)(3); //6
       // add1(1,2,3);   //6
       // add1(1)(2,3);  //6
-     function add2(a,b,c) {
+ /*     function add2(a,b,c) {
          return a+b+c
      }
      let add1=curry(add2)
      console.log(add1(1,2,3))
      console.log(add1(1)(2)(3))
-     console.log(add1(1)(2,3))
+     console.log(add1(1)(2,3)) */
     /*
 
       function jc(n) {
@@ -1212,7 +1212,6 @@
 */
 
 // 12345678910111213
-
 
 
 

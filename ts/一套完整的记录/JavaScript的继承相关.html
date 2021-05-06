@@ -4,64 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>javaScript的继承相关的实现</title>
+    <style>
+        .box{
+            width: 10vh;
+            background: red;
+            height: 30vh
+        }
+    </style>
 </head>
 <body>
 1、原型链继承
-
+<div class="box"></div>
 </body>
 </html>
 <script>
-   function Person(e) {
-       this.name=e;
+
+    // 原型链继承的核心是 prototype = new Person()
+   /* function Person(name,age) {
+       let tall = 170
+       this.name=name;
        this.getName=function () {
-           alert(this.name)
+           console.log(this.name)
+           return this.name
        }
    }
-   Person.age=18
-    console.log(Person)
-    function child1(){
-       this.name='小小'
+   Person.prototype.tall = 180
+   Person.prototype.getAge = function(){
+       return this.tall
+   }
+   function person(name,age){
+   }
+   person.prototype = new Person() // 核心啊 
+   const xh = new person('xx',19)
+   console.log(xh.getAge()) */
+
+//    有一种封装：
+   function createObject(o){
+       function fn(){}
+       fn.prototype = o
+       return new fn()
+   }
+//    优缺点说一下  子类的属性和方法会影响到父类。
+// 2、构造函数继承
+  /*  function Person(name,age){
+       this.name = 123
+   }
+   Person.prototype.getNames = function(){
+       return this.name
+   }
+   function person(){
+        Person.call(this,arguments)
+   }
+   const xh = new person('xxx')
+   console.log(xh.getNames()) */
+
+   // 子类无法使用父类原型链上的的方法和属性
+   //  3、组合继承  优点是集合了能访问父类原型链上的方法和属性，同时修改父类的属性不会造成值的相互影响。
+  /*  function Person(){
+        this.name = 1
+        var name = 2
+   }
+   Person.prototype.getName = function(){
+       console.log(this.name)
+   }
+   function person(){
+        Person.call(this,arguments)
+   }
+   person.prototype = new Person()
+
+   const x = new person()
+   x.getName()
+   x.color = 'yellow'
+   person.color = 'red'
+   console.log(person.color)
+ */
+//  4、寄生组合继承
+ /*   function Person(){
+       this.name = name
+   }
+   Person.prototype.getName = function(){
+       console.log(this.name)
+   }
+   function person(){
+       Person.call(this)
+   }
+   person.prototype = new Person()
+   person.prototype.constructor = person */
+   
+//  5、当然还少不了es6的继承 
+/* 
+class Person{
+    constructor(){
+        this.name = 'x'
     }
-
-
-
-    // function swap(a,b){
-    //    let {c,d,e,f}=config
-    //     [a,b]=[b,a];
-    //    return [a,b]
-    // }
-
-    // console.log(swap(1,3))
-
-   let obj1={a:1,b:2};
-   let obj2=Object.assign({},obj1);
-   obj1.a=4
-   console.log(obj1)
-
-   let obj3=deepClone(obj1);
-   console.info(obj3)
-    function deepClone(target){
-       return JSON.parse(JSON.stringify(target))
+    getName(){
+        console.log(this.name)
     }
+}
 
-    function clone(target) {
-        if(typeof target !=='object') return
-
+class person extends Person{
+    constructor(){
+        super()
+        this.name = 2
     }
-
-    ["1", "2", "3"].map(parseInt)
-    console.log(null instanceof Object)
-
-    (function (window) {
-
-    })(window)
-    (function(){}())
-
-    let promise=new Promise(((resolve, reject) => {
-        if(true){
-            resolve('')
-        }else{
-            reject('')
-        }
-    }))
+}
+const xh = new person()
+xh.getName() */
 </script>

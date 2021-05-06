@@ -33,6 +33,18 @@
             </li>
             <li>
                 2、函数柯里化的实现，理解。
+                <pre>
+    柯里化是一种特殊的偏函数。
+    把函数的多个参数转化为单一参数的函数，返回的是一个函数。
+    主要用到的是闭包保存参数，然后递归执行，把参数传递下去。
+    把多参数通过闭包转化为单一参数，递归调用，返回一个函数。
+    1、需要传入一个函数
+    2、定义一个函数，返回这个函数，在这个函数中接受参数
+    3、判断传入的参数的长度是否等于传入函数的长度
+    4、如果长度相等 返回这个函数同时把函数执行，传入参数。
+    5、否则在返回一个新函数，接收新参数。
+    6、在返回定义的函数递归调用，传入参数。
+                </pre>
             </li>
             <li>
                 3、数组去重的几种方法，以及统计字符串字符出现的次数。
@@ -45,6 +57,12 @@
             </li>
             <li>
                 6、new的实现理解。
+            </li>
+            <li>
+                7、防抖和节流的区别以及实现等。
+            </li>
+            <li>
+                8、继承的实现以及优缺点，理解。
             </li>
         </ul>
     </div>
@@ -363,7 +381,7 @@
 
     // Promise的一些完整的实现，需要实现异步调用，then的链式调用，值的穿透。
 
-   /*  class MyPromise{
+    /* class MyPromise{
          constructor(executor){
              this.status = 'pending'
              this._value = undefined
@@ -414,7 +432,7 @@
                  let rejectedFn = val =>{
                      let x = onRejected(val)
                      try{
-                         x instanceof MyPromise ? x.then(resolve,reject): resolve(x)
+                         (x instanceof MyPromise) ? x.then(resolve,reject): resolve(x)
                      }catch(err){
                          reject(err)
                      }
@@ -453,7 +471,16 @@
             )
         }
      }
- */
+
+     const p1 = new Promise((resolve,reject)=>{
+         resolve(1)
+     })
+     var p2 = p1.then(item=>{
+        return p2
+     })
+     .then(item => {
+         console.log(item)
+     }) */
  /* //Promise/A+规定的三种状态
 const PENDING = 'pending'
 const FULFILLED = 'fulfilled'
@@ -681,7 +708,7 @@ const myRacePromise = promiseArr =>{
 // 先理解一下new的作用，new用来创建一个新的对象，这个新的对象在旧的对象的原型上,通过apply改变this的指向，以及参数传递，判断返回的类型是不是object
 // 返回
 
-const Person = function(name,age){
+/* const Person = function(name,age){
     this.name = name
     this.age = age
     return this
@@ -703,9 +730,437 @@ const _new = (fn,...arg)=>{
 
 const newObj = _new(Person,'angular',18)
 
-console.log(newObj)
+console.log(newObj) */
+
+// 节流防抖的概念以及有什么区别呢
+// 防抖是高频触发的事件在一定时间内只会触发一次，如果在吃触发则重新计时。
+// 节流是控制事件执行的频率，如果再次触发，第一次事件如果没有执行完成则忽略。
+
+/* const debounce = (fn,time)=>{
+    if(typeof fn !=='function') return
+    let timer = null 
+    return (...arg)=>{
+        if(timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+            fn.apply(this,arg)
+        }, time);
+    }
+}
+
+const throlle = (fn,time)=>{
+    if(typeof fn !=='function') return
+    let timer = null,state = true
+    return (...arg)=>{
+        if(state){
+            timer = setTimeout(() => {
+                fn(arg)
+                state = false
+            }, time);
+        }
+    }
+}
+ */
+
+ // instanceof 
+   /*  const arr = [1,2,3]
+    const obj = {
+        name: 1
+    }
+    const fn = ()=>{}
+    const str = 'i am'
+    const num = 1
+    const symbol = Symbol(1)
+    const n = null
+    const un = undefined
+    const b = true
+
+    console.log(fn instanceof Object)
+
+    const MyInstanceof = (value,type)=>{
+        while(true){
+            if(value.__proto__===type.prototype){
+                return true
+            }
+            if(value.__proto__===null){
+                return false
+            }
+            value.__proto__ = value.__proto__.__proto__
+        }
+    }
+
+    console.log(MyInstanceof(fn, Object))
+
+ */
+    // 1、class extend继承
+  /*   class Person{
+        constructor(name,age){
+            this.name = name
+            this.age = age
+        }
+        static showName(){
+            console.log(this.name)
+            return this.name
+        }
+    }
+    const a = new Person('xxx',16)
+
+    a.showName() */
+
+    // 2、原型链继承
+  /*   function Person(name){
+        this.name = name
+    }
+    Person.prototype.getName = function(){
+        return this.name
+    }
+    let person = function (){}
+    person.prototype = new Person('嘻嘻嘻')
+    let xh = new person()
+    console.log(person.getName())
+    console.log(xh.getName()) */
+
+    // 3、构造函数继承
+
+    /* function Person(name){
+        this.name = name
+    }
+
+    Person.prototype.getName = function(){
+        return this.name
+    }
+
+    function person(...arg){
+        Person.apply(this,arg)
+    }
+    console.log(person.getName())
+    let p = new person()
+    console.log(p) */
+    /* document.write('code base')
+    function Dog(name){
+        var heart = '跳动';
+        var belly = 'healthy'
+        var show = function(){
+            console.log('this is private')
+        }
+        this.name = name
+        this.jump = function(){
+            console.log('one secend times')
+        }
+    }
+    Dog.prototype.clean = function(){
+        console.log('clean body')
+        return 'clean body'
+    }
+    Dog.prototype.fell = function(){
+        console.log(123)
+    }
+    // 私有属性  内部定义的一些
+    // 公有属性  this指定的一些属性或者方法， 或者通过 prototype指定的一些属性方法
+
+    // 静态属性和方法 是如下的形式
+    Dog.fell = function(){
+        console.log('fell good')
+    }
+    console.log(Dog.prototype)
+    // 常见的静态方法比如  Promise.race  Promise.all
+    var xh = new Dog('小小')
+    for (let key in xh){
+        console.log(key)
+    }
+    console.log(Object.getOwnPropertyNames(xh))
+
+    console.log(Object.prototype) */
+
+
+    // class Dog{
+    //     fn = function(){
+    //         console.log(1)
+    //     }
+    //     fn1(){
+    //         console.log(2)
+    //     }
+    // }
+    // var a = new Dog()
+    // console.log(Dog.prototype)
+    // a.fn()
+    // a.fn1()
+
+    // function Dog(name){
+    //     this.name = name
+    //     var color = 'yellow'
+    // }
+    // Dog.prototype.showName = function(){
+    //     console.log(this.name)
+    // }
+    // Dog.showName1 = function(){
+    //     console.log(this.name)
+    // }
+
+    // var petter = new Dog('xxx')
+    // console.log(petter.showName())
+/* const res = [2,2,2,3,2,2,2,2]
+const findBig = (arg)=>{
+    const arg1 = arg.splice(0,3)
+    const arg2 = arg.splice(0,3)
+    const arg3 = arg.splice(0,2)
+    const res1 = arg1.reduce((total,item)=>{
+        total = total + item
+        return total
+    },'')
+    const res2 = arg2.reduce((total,item)=>{
+        total = total + item
+        return total
+    },'')
+    let result = []
+    if(res1 > res2){
+        result = arg1
+    }else if(res1===res2){
+        result = arg3
+    } else{
+        result = arg2
+    }
+    return result
+}
+const fingBig1 = (arg)=>{
+    let ball = null
+    if(arg[0]>arg[1]){
+        ball = arg[0]
+    }else if(arg[0]===arg[1]){
+        ball = arg[2]
+    }else{
+        ball = arg[1]
+    }
+    return ball
+}
+
+console.log(fingBig1(findBig(res))) */
 
 
 
 
-</script>
+// class Cat{
+//     constructor(name,color){
+//         this.name = name
+//     }
+//     name = 'xiaoxiao'
+// }
+    
+
+
+
+    //  继承的都是一些概念以及 this的理解 所以先把call apply bind 写一下省的忘记了
+
+    // call 的实现 那么要理解call的作用以及规则，改变this执行，传递参数，参数已string的形式
+
+   /*  Function.prototype._call = function (context = window){
+        if(context === null) return 
+        let fn = Symbol('fn')
+        context.fn = this
+        let result = undefined
+        if(typeof context === 'object'){
+            context.fn(...arguments)
+        }
+        delete context.fn
+        return result
+    }
+    function person(name,color){
+        console.log(this.name)
+        console.log([...arguments])
+    }
+    var name = 'window'
+    var obj = {
+        name: 'obj'
+    }
+
+
+    Function.prototype._apply = function(context=window,arg){
+        if(!Array.isArray(arg)){
+            throw new Error('must be a array')
+        }
+        let fn = Symbol('fn')
+        let restult = undefined
+        context.fn = this
+        restult = context.fn(arg)
+        delete context.fn
+        return restult
+    }
+
+    person.bind(obj,1,2,3,4)()
+    // person.call(obj)
+    // person.bind(obj)()
+    // 是这样么回事，可以接受参数，参数可以是数组或者string ，创建一个新函数，这个新函数的this指定为第一个参数，但是返回的函数不执行
+    Function.prototype._bind = function(context = window){
+        let self = this
+        let arg1 = Array.prototype.slice.call(arguments,1)
+        let resultFn = function(){
+            let arg2 = Array.prototype.slice.call(arguments)
+            return self.apply(this instanceof resultFn ? this :context,arg1.concat(arg2))
+        }
+        let newFn = function(){}
+        newFn.prototype = this.prototype
+        resultFn.prototype = newFn.prototype
+        return resultFn
+    } */
+
+
+    //  深浅拷贝的一些简单实现
+
+    // 要明白思路，浅拷贝和深拷贝的区别在于什么呢，浅拷贝和深拷贝都是针对引用数据类型，浅拷贝拷贝的是对象的存储在栈中的地址，改变对象会发生改变。
+    // 深拷贝是另外开辟一个存储空间，把值给拷贝过去，改变不会有影响。
+    // 从实现上讲，判断拷贝的类型，如果是对象或者数组在进行下去，使用for in 循环在使用 hasOwnProperty
+/* 
+    const shallowCopy = (target) =>{
+        let restult = Array.isArray(target)? []: {}
+        if(typeof target !=='object'){
+            restult = target
+        }else{
+            for(let i in target){
+                if(target.hasOwnProperty(i)){
+                    restult[i] = target[i]
+                }
+            }
+        }
+        return restult
+    }
+
+    const deepClone = (target, maps = new Map())=>{
+        if(target === null) return target
+        let result = Array.isArray(target)? []: {}
+        if(typeof target !== 'object'){
+            return target
+        }else{
+            if(maps.has(target)){
+                return maps.get(target)
+            }
+            maps.set(target, result)
+            for(let i in target){
+                if(target.hasOwnProperty(i)){
+                    result[i] = deepClone(target[i], maps)
+                }else{
+                    result[i] = target[i]
+                }
+            }
+            return result
+        }
+    }
+
+
+    let obj1 = {
+        name: 1
+    }
+    obj1.obj1 = obj1
+    let obj2 = deepClone(obj1)
+    obj1.age=18
+    console.log(obj2)
+
+    let arr1 = [1,2,3,4]
+    let arr2 = shallowCopy(arr1)
+    arr1.push(5)
+    console.log(arr2) */
+
+    // 重新继承，省的在次忘记了，还记得许多年前的春天，那时的我还没有那么多沧桑。
+   /*  // 1、构造函数继承
+    function Person(name,color){
+        this.name = name
+    }
+    Person.prototype.getName = function(){
+        console.log(this.name)
+        return this.name
+    }
+    let xh = new Person('x','yellow')
+    xh.getName() */
+
+    // 发布订阅模式的一个简单例子
+
+   /*  class EventListener{
+        constructor(){
+            this.catchList = {}
+        }
+        on(name, fn){
+            if(this.catchList[name]){
+                this.catchList[name].push(fn)
+            }else{
+                this.catchList[name] = [fn]
+            }
+        }
+        emit(name,...arg){
+            if(this.catchList[name]){
+                let task = this.catchList[name].slice()
+                for(let fn in task){
+                    fn(...arg)
+                }
+            }
+        }
+        off(name){
+            if(this.catchList[name]){
+
+            }
+        }
+    } */
+
+    const tree = {
+        parentId: null,
+        id: 1,
+        name: 1,
+        children: [
+            {
+                parentId: 1,
+                id: 2,
+                name: 2,
+                children: [
+                    {
+                        parentId: 2,
+                        id: 3,
+                        name: 3
+                    },
+                    {
+                        parentId: 2,
+                        id: 6,
+                        name: 6
+                    }
+                ]
+            },
+            {
+                parentId: 1,
+                id: 4,
+                name: 4,
+                children: [
+                    {
+                        parentId: 4,
+                        id: 5,
+                        name: 5
+                    }
+                ]
+            }
+        ]
+    }
+    console.log(tree)
+
+    const travelTree = (node, nodeList = [])=>{
+        if(node){
+            nodeList.push(node)
+            let children = node.children || []
+            for(let i = 0;i<children.length;i++){
+                travelTree(children[i], nodeList)
+            }
+        }
+        return nodeList
+    }
+    console.log(travelTree(tree))
+/* 
+    const deepTree = (tree,target)=>{
+        let stack = [tree]
+        while(stack.length!==0){
+            let lastPop = stack.pop()
+            if(lastPop.children&&lastPop.children.length>0){
+                stack.push(...[...lastPop.children].reverse())
+            }
+            if(lastPop.id === target){
+                return lastPop
+            }
+        }
+        return false
+    }
+    console.log(deepTree(tree, 6))
+ */
+ </script>
